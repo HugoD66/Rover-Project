@@ -50,10 +50,8 @@ class Rover implements IRover, IEtatRover {
     private move(moveForward: boolean): IEtatRover {
         const nextPosition = this.calculateNextPosition(moveForward);
 
-        if (!this.isValidPosition(nextPosition.x, nextPosition.y)) {
-            nextPosition.x = (nextPosition.x + this.maxX + 1) % (this.maxX + 1);
-            nextPosition.y = (nextPosition.y + this.maxY + 1) % (this.maxY + 1);
-        }
+        nextPosition.x = (nextPosition.x + this.maxX) % this.maxX;
+        nextPosition.y = (nextPosition.y + this.maxY) % this.maxY;
 
         this.positionX = nextPosition.x;
         this.positionY = nextPosition.y;

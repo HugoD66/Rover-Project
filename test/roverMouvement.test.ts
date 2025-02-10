@@ -44,8 +44,7 @@ describe("Tests de déplacement du Rover", () => {
   });
 });
 
-/*
-describe("Tests de déplacement sur la map ( retour au début )  du Rover", () => {
+describe("Tests de déplacement sur la map ( retour au début ) du Rover", () => {
   let rover: Rover;
 
   test("Le rover dépasse la limite nord et revient au sud", () => {
@@ -80,4 +79,4 @@ describe("Tests de déplacement sur la map ( retour au début )  du Rover", () =
     expect(etat.GetPositionY()).toBe(3);
   });
 });
-*/
+
