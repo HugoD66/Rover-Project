@@ -1,8 +1,8 @@
-import { IRover, IEtatRover, Orientation } from '../interface/rover.interface';
+import {IRover, IEtatRover, Orientation, EntierPositif} from '../interface/rover.interface';
 
 class Rover implements IRover, IEtatRover {
-    private positionX: number;
-    private positionY: number;
+    private positionX: EntierPositif;
+    private positionY: EntierPositif;
     private orientation: string;
     private readonly maxX: number;
     private readonly maxY: number;
@@ -14,8 +14,8 @@ class Rover implements IRover, IEtatRover {
       maxX: number = 10,
       maxY: number = 10
     ) {
-        this.positionX = initialX;
-        this.positionY = initialY;
+        this.positionX = new EntierPositif(initialX);
+        this.positionY = new EntierPositif(initialY);
         this.orientation = initialOrientation;
         this.maxX = maxX;
         this.maxY = maxY;
@@ -26,8 +26,8 @@ class Rover implements IRover, IEtatRover {
     }
 
     private calculateNextPosition(moveForward: boolean): { x: number; y: number } {
-        let newX = this.positionX;
-        let newY = this.positionY;
+        let newX = this.positionX.getValue();
+        let newY = this.positionY.getValue();
 
         switch (this.orientation) {
             case Orientation.NORD:
@@ -47,14 +47,15 @@ class Rover implements IRover, IEtatRover {
         return { x: newX, y: newY };
     }
 
+
     private move(moveForward: boolean): IEtatRover {
         const nextPosition = this.calculateNextPosition(moveForward);
 
         nextPosition.x = (nextPosition.x + this.maxX) % this.maxX;
         nextPosition.y = (nextPosition.y + this.maxY) % this.maxY;
 
-        this.positionX = nextPosition.x;
-        this.positionY = nextPosition.y;
+        this.positionX = new EntierPositif(nextPosition.x);
+        this.positionY = new EntierPositif(nextPosition.y);
         return this.GetEtat();
     }
 
@@ -94,11 +95,11 @@ class Rover implements IRover, IEtatRover {
         return this.orientation;
     }
 
-    GetPositionX(): number {
+    GetPositionX(): EntierPositif {
         return this.positionX;
     }
 
-    GetPositionY(): number {
+    GetPositionY(): EntierPositif {
         return this.positionY;
     }
 }

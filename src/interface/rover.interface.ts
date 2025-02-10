@@ -6,8 +6,8 @@ export interface IRover {
 }
 
 export interface IEtatRover {
-  GetPositionX(): number;
-  GetPositionY(): number;
+  GetPositionX(): EntierPositif;
+  GetPositionY(): EntierPositif;
   GetOrientation(): Orientation;
 }
 
@@ -16,4 +16,19 @@ export abstract class Orientation {
   static readonly EST = 'E';
   static readonly SUD = 'S';
   static readonly OUEST = 'W';
+}
+
+export class EntierPositif {
+  private value: number;
+
+  constructor(value: number) {
+    if (value < 0) {
+      throw new Error('La valeur doit être positive');
+    }
+    this.value = value;
+  }
+
+  getValue(): number {
+    return this.value;
+  }
 }
