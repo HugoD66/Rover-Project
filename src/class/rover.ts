@@ -1,6 +1,6 @@
 import { IRover, IEtatRover, Orientation } from '../interface/rover.interface';
 
-class Rover implements IRover {
+class Rover implements IRover, IEtatRover {
     private positionX: number;
     private positionY: number;
     private orientation: string;
@@ -8,11 +8,11 @@ class Rover implements IRover {
     private readonly maxY: number;
 
     constructor(
-        initialX: number,
-        initialY: number,
-        initialOrientation: string,
-        maxX: number = 10,
-        maxY: number = 10
+      initialX: number,
+      initialY: number,
+      initialOrientation: string,
+      maxX: number = 10,
+      maxY: number = 10
     ) {
         this.positionX = initialX;
         this.positionY = initialY;
@@ -57,11 +57,7 @@ class Rover implements IRover {
 
         this.positionX = nextPosition.x;
         this.positionY = nextPosition.y;
-        return {
-            GetPositionX: () => this.positionX,
-            GetPositionY: () => this.positionY,
-            GetOrientation: () => this.orientation
-        };
+        return this.GetEtat();
     }
 
     Avancer(): IEtatRover {
@@ -77,11 +73,7 @@ class Rover implements IRover {
         const currentIndex = directions.indexOf(this.orientation);
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
-        return {
-            GetPositionX: () => this.positionX,
-            GetPositionY: () => this.positionY,
-            GetOrientation: () => this.orientation
-        };
+        return this.GetEtat();
     }
 
     TournerADroite(): IEtatRover {
@@ -89,11 +81,27 @@ class Rover implements IRover {
         const currentIndex = directions.indexOf(this.orientation);
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
+        return this.GetEtat();
+    }
+
+    GetEtat(): IEtatRover {
         return {
             GetPositionX: () => this.positionX,
             GetPositionY: () => this.positionY,
             GetOrientation: () => this.orientation
         };
+    }
+
+    GetOrientation(): string {
+        return this.orientation;
+    }
+
+    GetPositionX(): number {
+        return this.positionX;
+    }
+
+    GetPositionY(): number {
+        return this.positionY;
     }
 }
 
