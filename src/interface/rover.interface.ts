@@ -12,4 +12,8 @@ export interface IEtatRover {
 }
 
 export abstract class Orientation {
+  static readonly NORD = 'N';
+  static readonly EST = 'E';
+  static readonly SUD = 'S';
+  static readonly OUEST = 'W';
 }
