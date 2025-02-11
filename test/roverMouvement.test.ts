@@ -4,11 +4,10 @@ import { Map } from "../src/class/map";
 
 describe("Tests de déplacement du Rover", () => {
   let rover: Rover;
-  let map: Map = new Map(5, 5);
-
+  let map: Map;
 
   test("Le rover avance de 1 vers le Nord", () => {
-
+    map = new Map(5, 5);
     rover = new Rover(0, 0, Orientation.NORD, map);
 
     rover.Avancer();
