@@ -1,3 +1,4 @@
+// Interface générale pour le rover.
 export interface IRover {
   Avancer(): IEtatRover;
   Reculer(): IEtatRover;
@@ -5,12 +6,14 @@ export interface IRover {
   TournerADroite(): IEtatRover;
 }
 
+// Interface pour avoir l'état actuel du rover
 export interface IEtatRover {
-  GetPositionX(): EntierPositif;
-  GetPositionY(): EntierPositif;
+  GetPositionX(): number;
+  GetPositionY(): number;
   GetOrientation(): Orientation;
 }
 
+// Interface pour avoir les différentes orientations possibles
 export abstract class Orientation {
   static readonly NORD = 'N';
   static readonly EST = 'E';
@@ -18,6 +21,9 @@ export abstract class Orientation {
   static readonly OUEST = 'W';
 }
 
+
+// Exercice du typage non terminé
+/*
 export class EntierPositif {
   private value: number;
 
@@ -31,4 +37,4 @@ export class EntierPositif {
   getValue(): number {
     return this.value;
   }
-}
+}*/
