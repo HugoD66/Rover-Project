@@ -1,11 +1,14 @@
-import {Rover} from "../src/class/rover";
-import {Orientation} from "../src/interface/rover.interface";
+import { Rover } from "../src/class/rover";
+import { Orientation } from "../src/interface/rover.interface";
+import { Map } from "../src/class/map";
 
 describe("Tests de rotation du Rover", () => {
   let rover: Rover;
+  let map: Map;
 
   beforeEach(() => {
-    rover = new Rover(0, 0, Orientation.SUD, 5, 5);
+    map = new Map(5, 5);
+    rover = new Rover(0, 0, Orientation.SUD, map);
   });
 
   test("Le rover tourne à gauche", () => {
@@ -23,4 +26,4 @@ describe("Tests de rotation du Rover", () => {
     expect(etat.GetPositionY()).toBe(0);
     expect(etat.GetOrientation()).toBe(Orientation.OUEST);
   });
-})
+});

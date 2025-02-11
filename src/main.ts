@@ -1,8 +1,10 @@
 import { Rover } from './class/rover';
 import { Orientation } from './interface/rover.interface';
+import { Map } from './class/map';
 
 function moveRover() {
-    const rover = new Rover(0, 0, Orientation.NORD, 5, 5);
+    const map = new Map(5, 5);
+    const rover = new Rover(0, 0, Orientation.NORD, map);
 
     const states = [];
     states.push(rover.Avancer());

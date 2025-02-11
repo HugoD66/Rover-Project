@@ -21,7 +21,6 @@ export abstract class Orientation {
   static readonly OUEST = 'W';
 }
 
-
 // Exercice du typage non terminé
 /*
 export class EntierPositif {
