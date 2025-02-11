@@ -1,112 +1,85 @@
-import {IRover, IEtatRover, Orientation} from '../interface/rover.interface';
+import { IRover, IEtatRover, Orientation } from '../interface/rover.interface';
 
-//Sert à instancier une classe Rover
 class Rover implements IRover, IEtatRover {
     private positionX: number;
     private positionY: number;
-    private orientation: string;
+    private orientation: Orientation;
     private readonly maxX: number;
     private readonly maxY: number;
 
+    private static readonly DIRECTIONS: Orientation[] = [
+        Orientation.NORD,
+        Orientation.EST,
+        Orientation.SUD,
+        Orientation.OUEST
+    ];
+
     constructor(
-      initialX: number,
-      initialY: number,
-      initialOrientation: string,
-      maxX: number = 10,
-      maxY: number = 10
+        initialX: number,
+        initialY: number,
+        initialOrientation: Orientation,
+        maxX: number = 10,
+        maxY: number = 10
     ) {
-        this.positionX = initialX;
-        this.positionY = initialY;
+        this.positionX = initialX % maxX;
+        this.positionY = initialY % maxY;
         this.orientation = initialOrientation;
         this.maxX = maxX;
         this.maxY = maxY;
     }
 
-    //Fonction qui calcule la prochaine position du rover
-    private calculateNextPosition(moveForward: boolean): { x: number; y: number } {
-        let newX = this.positionX;
-        let newY = this.positionY;
+    private calculateNextPosition(forward: boolean): { x: number; y: number } {
+        const movement = {
+            [Orientation.NORD]: { x: 0, y: 1 },
+            [Orientation.EST]: { x: 1, y: 0 },
+            [Orientation.SUD]: { x: 0, y: -1 },
+            [Orientation.OUEST]: { x: -1, y: 0 }
+        };
 
-        switch (this.orientation) {
-            case Orientation.NORD:
-                newY += moveForward ? 1 : -1;
-                break;
-            case Orientation.EST:
-                newX += moveForward ? 1 : -1;
-                break;
-            case Orientation.SUD:
-                newY += moveForward ? -1 : 1;
-                break;
-            case Orientation.OUEST:
-                newX += moveForward ? -1 : 1;
-                break;
-        }
-
-        return { x: newX, y: newY };
+        const factor = forward ? 1 : -1;
+        return {
+            x: (this.positionX + factor * movement[this.orientation as keyof typeof movement].x + this.maxX) % this.maxX,
+            y: (this.positionY + factor * movement[this.orientation as keyof typeof movement].y + this.maxY) % this.maxY
+        };
     }
 
-    //Fonction qui permet de déplacer le rover
-    private move(moveForward: boolean): IEtatRover {
-        const nextPosition = this.calculateNextPosition(moveForward);
-
-        nextPosition.x = (nextPosition.x + this.maxX) % this.maxX;
-        nextPosition.y = (nextPosition.y + this.maxY) % this.maxY;
-
+    private move(forward: boolean): IEtatRover {
+        const nextPosition = this.calculateNextPosition(forward);
         this.positionX = nextPosition.x;
         this.positionY = nextPosition.y;
-        return this.GetEtat();
+        return this;
     }
 
-    //Fonctions qui permettent de déplacer le rover en avant
     Avancer(): IEtatRover {
         return this.move(true);
     }
 
-    //Fonctions qui permettent de déplacer le rover en arrière
     Reculer(): IEtatRover {
         return this.move(false);
     }
 
-    //Fonctions qui permettent de tourner le rover à gauche
     TournerAGauche(): IEtatRover {
-        const directions = [Orientation.NORD, Orientation.OUEST, Orientation.SUD, Orientation.EST];
-        const currentIndex = directions.indexOf(this.orientation);
-        const nextIndex = (currentIndex + 1) % directions.length;
-        this.orientation = directions[nextIndex];
-        return this.GetEtat();
+        const currentIndex = Rover.DIRECTIONS.indexOf(this.orientation);
+        this.orientation = Rover.DIRECTIONS[(currentIndex + 3) % 4];
+        return this;
     }
 
-    //Fonctions qui permettent de tourner le rover à droite
     TournerADroite(): IEtatRover {
-        const directions = [Orientation.NORD, Orientation.EST, Orientation.SUD, Orientation.OUEST];
-        const currentIndex = directions.indexOf(this.orientation);
-        const nextIndex = (currentIndex + 1) % directions.length;
-        this.orientation = directions[nextIndex];
-        return this.GetEtat();
+        const currentIndex = Rover.DIRECTIONS.indexOf(this.orientation);
+        this.orientation = Rover.DIRECTIONS[(currentIndex + 1) % 4];
+        return this;
     }
 
-    //Fonction qui permet de retourner l'état ACTUEL du rover
-    GetEtat(): IEtatRover {
-        return {
-            GetPositionX: () => this.positionX,
-            GetPositionY: () => this.positionY,
-            GetOrientation: () => this.orientation
-        };
-    }
-
-    //Fonction qui permet de retourner l'orientation du rover
-    GetOrientation(): string {
-        return this.orientation;
-    }
-
-    //Fonction qui permet de retourner la position sur l'axe des X du rover
     GetPositionX(): number {
         return this.positionX;
     }
 
-    //Fonction qui permet de retourner la position sur l'axe des Y du rover
     GetPositionY(): number {
         return this.positionY;
+    }
+
+    GetOrientation(): Orientation {
+        return this.orientation;
     }
 }
 
