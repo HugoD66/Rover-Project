@@ -22,7 +22,7 @@ export class Rover implements IRover, IEtatRover {
     }
 
     //Fonction qui retourne la prochaine position du rover ( vecteur )
-    private calculateNextPosition(moveForward: boolean): { x: number; y: number } {
+    public calculateNextPosition(moveForward: boolean): { x: number; y: number } {
         let newX = this.positionX;
         let newY = this.positionY;
 
