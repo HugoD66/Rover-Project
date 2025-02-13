@@ -15,26 +15,7 @@ function moveRover() {
     //Pas de colision :
     const interpreter =  new Interpreter(rover, ['A', 'R', 'R', 'G', 'A', 'A'], obstacle);
 
-    interpreter.Execute();
+    interpreter.execute();
 }
 
 moveRover();
-
-
-/*const states = [];
-   states.push(rover.Avancer());
-   states.push(rover.Avancer());
-   states.push(rover.TournerADroite());
-   states.push(rover.Avancer());
-   states.push(rover.Avancer());
-
-   states.forEach((state, index) => {
-       console.log(`Étape ${index + 1}:`, {
-           x: state.GetPositionX(),
-           y: state.GetPositionY(),
-           orientation: state.GetOrientation()
-       });
-   });
-
-   return states;
-   */

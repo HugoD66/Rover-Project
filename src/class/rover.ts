@@ -1,7 +1,8 @@
 import {IRover, IEtatRover, Orientation} from '../interface/rover.interface';
 import {Map} from './map';
 
-//Sert à instancier une classe Rover / Deplacer / Tourner
+//Entity
+// Mutable/Cycle de vie
 export class Rover implements IRover, IEtatRover {
     private positionX: number;
     private positionY: number;

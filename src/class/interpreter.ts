@@ -7,9 +7,12 @@ import { Rover } from "./rover"
 import { Obstacle } from "./obstacle"
 import { Map } from "./map"
 
+//Entity
+// Mutable, chaque instance unique
+//faire classe statique ( service )
 export class Interpreter implements IInterpreter {
   private rover: Rover
-  private commandLine: string[] // Example: ABRDDGA
+  private commandLine: string[]
   private obstacle?: Obstacle | null
 
   public constructor(
@@ -22,10 +25,9 @@ export class Interpreter implements IInterpreter {
     this.obstacle = obstacle
   }
 
-  Execute() {
+  public execute() {
     const roverState = this.rover.GetEtat()
 
-    // Parcourt toutes les commandes de la ligne de commande
     for (const command of this.commandLine) {
       try {
         this.executeCommand(command, roverState)

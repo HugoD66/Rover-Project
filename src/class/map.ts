@@ -1,6 +1,9 @@
+// Objet valeur
+// maxX et maxY défifies comme readonly ( immuable)
 export class Map {
   private readonly maxX: number;
   private readonly maxY: number;
+  //Lier obstacle à la map ( planete ) plutot
 
   constructor(maxX: number = 10, maxY: number = 10) {
     this.maxX = maxX;
