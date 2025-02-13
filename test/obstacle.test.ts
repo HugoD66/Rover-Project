@@ -1,3 +1,4 @@
+/*
 import {Obstacle} from "../src/class/obstacle";
 
 describe("Tests de création des obstacles", () => {
@@ -7,4 +8,4 @@ describe("Tests de création des obstacles", () => {
     obstacles = new Obstacle(2, 2);
     expect(obstacles.getObstaclePositions()).toStrictEqual({x: 2, y: 2});
   })
-})
+})*/

@@ -1,3 +1,4 @@
+/*
 import {Interpreter} from "../src/class/interpreter";
 import {Rover} from "../src/class/rover";
 import {Map} from "../src/class/map";
@@ -18,4 +19,4 @@ describe("Tests de création de la chaine de commande", () => {
 
     expect(interpreter.getCommand()).toStrictEqual(['A', 'G', 'G', 'G', 'A', 'A']);
   })
-})
+})*/

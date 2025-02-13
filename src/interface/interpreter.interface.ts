@@ -1,6 +1,5 @@
 export interface IInterpreter {
-    // Exécute les commandes du rover
-    Execute(): void;
+  execute(): void;
 }
 
 export abstract class InterpreterDirection {

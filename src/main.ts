@@ -1,24 +1,45 @@
 import { Rover } from './class/rover';
-import { Orientation } from './interface/rover.interface';
 import { Map } from './class/map';
-import {Obstacle} from "./class/obstacle";
-import {Interpreter} from "./class/interpreter";
 
 function moveRover() {
     const map = new Map(5, 5);
-    const rover = new Rover(0, 0, Orientation.NORD, map);
-    const obstacle = new Obstacle(1, 1)
+    const rover = new Rover();
 
-    //Colision :
-    //const interpreter =  new Interpreter(rover, ['A', 'G', 'G', 'G', 'A', 'A'], obstacle);
+    rover.map = map;
+    rover.goAhead();
+    rover.turnOnRight();
+    rover.goAhead();
 
-    //Pas de colision :
-    const interpreter =  new Interpreter(rover, ['A', 'R', 'R', 'G', 'A', 'A'], obstacle);
+    const position = rover.getActualPositions();
+    const orientation = rover.getOrientation();
 
-    interpreter.Execute();
+    console.log(`Position du rover : (${position.coordinates.x}, ${position.coordinates.y})`);
+    console.log(`Orientation du rover : ${orientation}`);
+
+
 }
 
 moveRover();
+
+
+/* const map = new Map(5, 5);
+  const rover = new Rover(0, 0, Orientation.NORD, map);
+  const obstacle = new Obstacle(1, 1)
+
+  //Colision :
+  //const interpreter =  new Interpreter(rover, ['A', 'G', 'G', 'G', 'A', 'A'], obstacle);
+
+  //Pas de colision :
+  const interpreter =  new Interpreter(rover, ['A', 'R', 'R', 'G', 'A', 'A'], obstacle);
+
+  interpreter.execute();*/
+
+
+
+
+
+
+
 
 
 /*const states = [];
