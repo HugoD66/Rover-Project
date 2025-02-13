@@ -18,40 +18,33 @@ export class Interpreter implements IInterpreter {
   }
 
   Execute() {
+
+    const roverState = this.rover.GetEtat();
+    const nextRoverPosition = this.rover.calculateNextPosition(true);
+
     this.commandLine.forEach((command) => {
       switch (command) {
         case InterpreterDirection.AVANCER :
-          const rover = this.rover.GetEtat();
-          //VOir si collision si on avance,
-          // Case obstacle :
-            // S'arrete, signale obstacle et renvoie position ( GetEtat())
-          // Case pas d'obstacle :
-            // continue la commandLine
-          const nextRoverPosition = this.rover.calculateNextPosition(true);
-
-          this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, rover);
+          this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, roverState);
           this.rover.Avancer();
 
           break;
         case InterpreterDirection.DROITE :
-          this.rover.GetEtat();
           this.rover.TournerADroite();
-          //Voir si collision
+          this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, roverState);
 
           this.rover.Avancer();
           break;
         case InterpreterDirection.GAUCHE :
-          this.rover.GetEtat();
           this.rover.TournerAGauche();
-          //Voir si collision
+          this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, roverState);
 
           this.rover.Avancer();
           break;
         case InterpreterDirection.RECULER :
-          this.rover.GetEtat();
           this.rover.TournerADroite();
           this.rover.TournerADroite();
-          //Voir si colision
+          this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, roverState);
           this.rover.Avancer();
 
           break;
@@ -61,11 +54,16 @@ export class Interpreter implements IInterpreter {
     })
   }
 
-  private checkObstacle(nextRoverPositionX: number, nextRoverPositionY: number, rover: IEtatRover): void {
+  private checkObstacle(nextRoverPositionX: number, nextRoverPositionY: number, roverState: IEtatRover): void {
     const obstacle: { x: number; y: number } | undefined = this.obstacle?.getObstaclePositions();
-//TODO SI ERREUR RENVOYER POSITION ROVER ( avec rover GetEtat position) et COORD POSITIONS
+
+      //TODO SI ERREUR RENVOYER POSITION ROVER ( avec rover GetEtat position) et COORD POSITIONS
     if (obstacle && obstacle.x === nextRoverPositionX && obstacle.y === nextRoverPositionY) {
-      throw new Error('Obstacle détecté');
+      const roverStateErrorMessage = `Rover position : ${roverState.GetPositionX()}, ${roverState.GetPositionY()}`;
+
+      const obstacleErrorMessage = `Obstacle position : ${obstacle.x}, ${obstacle.y}`;
+
+      throw new Error('Collision detected : ' + roverStateErrorMessage + ' ' + obstacleErrorMessage);
     }
   }
 
