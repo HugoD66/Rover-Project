@@ -1,6 +1,8 @@
 import { Rover } from "../src/class/rover";
 import { Orientation } from "../src/interface/rover.interface";
 import { Map } from "../src/class/map";
+import {Interpreter} from "../src/class/interpreter";
+import {Obstacle} from "../src/class/obstacle";
 
 describe("Tests de déplacement du Rover", () => {
   let rover: Rover;
@@ -95,4 +97,38 @@ describe("Tests de déplacement sur la map ( retour au début ) du Rover", () =>
     expect(etat.GetPositionY()).toBe(3);
   });
 });
+
+describe("Tests d'exécution de l'Interpreter", () => {
+  let interpreter: Interpreter;
+  let map: Map;
+  let rover: Rover;
+  let obstacles: Obstacle;
+
+  beforeEach(() => {
+    map = new Map(5, 5);
+    rover = new Rover(0, 0, Orientation.NORD, map);
+    obstacles = new Obstacle([{ x: 1, y: 1 }, { x: 2, y: 4 }, { x: 4, y: 4 }]);
+  });
+
+  test("Le rover exécute une série de commandes sans collision", () => {
+    interpreter = new Interpreter(map, rover, ['A'], obstacles);
+
+    expect(() => interpreter.Execute()).not.toThrow();
+
+    const etat = rover.GetEtat();
+    expect(etat.GetPositionX()).toBe(0);
+    expect(etat.GetPositionY()).toBe(1);
+  });
+
+  test("Le rover détecte une collision et arrête l'exécution", () => {
+    interpreter = new Interpreter(map, rover, ['A', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'A'], obstacles);
+
+    expect(() => interpreter.Execute()).toThrow('Collision detected');
+
+    const etat = rover.GetEtat();
+    expect(etat.GetPositionX()).toBe(0);
+    expect(etat.GetPositionY()).toBe(1);
+  });
+});
+
 

@@ -1,21 +1,11 @@
 export class Obstacle {
-    private x: number;
-    private y: number;
+    private coordinates: { x: number; y: number }[];
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+    constructor(coordinates:{x: number, y: number}[]) {
+        this.coordinates = coordinates;
     }
 
-    public getObstaclePositions() {
-        return {x: this.x, y: this.y};
-    }
-
-    private GetPositionX(): number {
-        return this.x;
-    }
-
-    private GetPositionY(): number {
-        return this.y;
+    public getObstaclesPositions(): { x: number; y: number }[] {
+        return this.coordinates;
     }
 }

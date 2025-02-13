@@ -7,13 +7,13 @@ import {Interpreter} from "./class/interpreter";
 function moveRover() {
     const map = new Map(5, 5);
     const rover = new Rover(0, 0, Orientation.NORD, map);
-    const obstacles = new Obstacle(1, 1)
+    const obstacles = new Obstacle([{x: 1, y: 1}, {x: 2, y: 4}, {x: 4, y: 4}]);
 
     //Colision :
-    const interpreter =  new Interpreter(map, rover, ['A', 'G', 'G', 'G', 'A', 'A'], obstacles);
+   //const interpreter =  new Interpreter(map, rover, ['A', 'G', 'G', 'G', 'A', 'A'], obstacles);
 
     //Pas de colision :
-    //const interpreter =  new Interpreter(map, rover, ['A', 'R', 'R', 'G', 'A', 'A'], obstacles);
+    const interpreter =  new Interpreter(map, rover, ['A', 'R', 'R', 'D'], obstacles);
 
 
 

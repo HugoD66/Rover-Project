@@ -18,11 +18,9 @@ export class Interpreter implements IInterpreter {
   }
 
   Execute() {
-    const roverState = this.rover.GetEtat();
+    let nextRoverPosition;
 
     for (const command of this.commandLine) {
-      let nextRoverPosition;
-
       switch (command) {
         case InterpreterDirection.AVANCER:
           nextRoverPosition = this.rover.calculateNextPosition(true);
@@ -43,6 +41,8 @@ export class Interpreter implements IInterpreter {
       }
 
       try {
+
+        const roverState = this.rover.GetEtat();
         this.checkObstacle(nextRoverPosition.x, nextRoverPosition.y, roverState);
 
         if (command === InterpreterDirection.AVANCER) {
@@ -50,6 +50,7 @@ export class Interpreter implements IInterpreter {
         } else if (command === InterpreterDirection.RECULER) {
           this.rover.Reculer();
         }
+
 
         console.log(`Rover position : ${roverState.GetPositionX()}, ${roverState.GetPositionY()}`);
 
@@ -61,12 +62,20 @@ export class Interpreter implements IInterpreter {
   }
 
   private checkObstacle(nextRoverPositionX: number, nextRoverPositionY: number, roverState: IEtatRover): void {
-    const obstacle = this.obstacle?.getObstaclePositions();
+    const obstacles = this.obstacle?.getObstaclesPositions();
 
-    if (obstacle && obstacle.x === nextRoverPositionX && obstacle.y === nextRoverPositionY) {
-      const roverStateErrorMessage = `Rover position : ${roverState.GetPositionX()}, ${roverState.GetPositionY()}`;
-      const obstacleErrorMessage = `Obstacle position : ${obstacle.x}, ${obstacle.y}`;
-      throw new Error('Collision detected : ' + roverStateErrorMessage + ' ' + obstacleErrorMessage);
+    if (!obstacles) return;
+
+    for (const obstacle of obstacles) {
+      if (obstacle.x === nextRoverPositionX && obstacle.y === nextRoverPositionY) {
+        console.log(`Collision detected at: ${obstacle.x}, ${obstacle.y}`);
+        throw new Error(`Collision detected: Rover at (${roverState.GetPositionX()}, ${roverState.GetPositionY()}), Obstacle at (${obstacle.x}, ${obstacle.y})`);
+      }
     }
+  }
+
+
+  public getCommand(): string[] {
+    return this.commandLine;
   }
 }
