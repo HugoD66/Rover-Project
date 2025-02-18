@@ -1,8 +1,7 @@
-import {IRoverState, Orientation, ARover} from '../interface/rover.interface';
+import {ARover, InterpreterDirection, IRoverState, Orientation} from '../interface/rover.interface';
 import {Coordinates} from "./coordinates";
 import {Map} from "./map";
-
-
+import {Obstacle} from "./obstacle";
 
 export class Rover extends ARover{
     map?: Map;
@@ -10,11 +9,11 @@ export class Rover extends ARover{
     constructor() {
         super(
           new Coordinates(0, 0),
-          Orientation.NORTH
+          Orientation.NORTH,
+          [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
         );
     }
 
-    //ETAT ROVER
     public getState(): IRoverState {
         return {
             getActualPositions: () => this.positions,
@@ -30,14 +29,30 @@ export class Rover extends ARover{
         return this.orientation;
     }
 
-    //DEPLACEMENT ROVER
-    public move(moveForward: boolean): IRoverState {
+    public move(moveForward: boolean, obstacles?: Obstacle[] | null | undefined): IRoverState {
         const nextPosition: Coordinates = this.calculateNextPosition(moveForward);
+
+        if (obstacles) {
+            for (const obstacle of obstacles) {
+                const obstacleCoordinates = obstacle.getObstaclePosition();
+
+                if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
+                    const returnErrorObstacleFormated = `Obstacle detected at position x: ${obstacleCoordinates.x} y: ${obstacleCoordinates.y}`;
+
+                    console.warn(
+                      `${returnErrorObstacleFormated}. Rover will not move to this position.`
+                    );
+                    return this.getState();
+                }
+            }
+        }
 
         this.positions.x = nextPosition.x;
         this.positions.y = nextPosition.y;
+
         return this.getState();
     }
+
 
     public calculateNextPosition(moveForward: boolean): Coordinates {
         let newX: number = this.positions.x;
@@ -61,8 +76,8 @@ export class Rover extends ARover{
         return this.map!.validateRoverPositionOnMap(newX, newY);
     }
 
-    public goAhead(): IRoverState {
-        return this.move(true);
+    public goAhead(obstacles?: Obstacle[] | null | undefined): IRoverState {
+        return this.move(true, obstacles);
     }
 
     public goBack(): IRoverState {
@@ -84,5 +99,45 @@ export class Rover extends ARover{
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
         return this.getState();
+    }
+
+    public executeCommandLine(): IRoverState {
+        const commandLine = this.commandLine;
+
+        if (!commandLine) {
+            console.log('No command line');
+        } else {
+            const obstacles = this.map?.getObstacles();
+
+            for (let i = 0; i < commandLine.length; i++) {
+                const command = commandLine[i];
+                switch (command) {
+                    case InterpreterDirection.AHEAD:
+                        this.goAhead(obstacles);
+                        break;
+                    case InterpreterDirection.RIGHT:
+                        this.turnOnRight();
+                        this.goAhead(obstacles);
+                        break;
+                    case InterpreterDirection.LEFT:
+                        this.turnOnLeft();
+                        this.goAhead(obstacles);
+
+                        break;
+                    case InterpreterDirection.BACK:
+                        this.turnOnLeft();
+                        this.turnOnLeft();
+                        this.goAhead(obstacles);
+
+                        break;
+                    default:
+                        console.log('Invalid command');
+                }
+            }
+        }
+
+
+        return this.getState();
+
     }
 }
