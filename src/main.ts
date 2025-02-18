@@ -13,7 +13,7 @@ function moveRover() {
     const position = rover.getActualPositions();
     const orientation = rover.getOrientation();
 
-    console.log(`Position du rover : (${position.coordinates.x}, ${position.coordinates.y})`);
+    console.log(`Position du rover : (${position.x}, ${position.y})`);
     console.log(`Orientation du rover : ${orientation}`);
 
 

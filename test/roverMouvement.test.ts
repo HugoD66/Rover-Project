@@ -1,10 +1,19 @@
 import { Rover } from "../src/class/rover";
 import {IRoverState, Orientation} from "../src/interface/rover.interface";
 import { Map } from "../src/class/map";
+import {Coordinates} from "../src/class/coordinates";
 
 describe("Tests de déplacement du Rover", () => {
   let rover: Rover;
   let map: Map;
+
+  test("Le rover est initialisé à la position (0, 0) et orienté vers le Nord", () => {
+    rover = new Rover();
+
+    const etat: IRoverState = rover.getState();
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 0));
+    expect(etat.getOrientation()).toBe(Orientation.NORTH);
+  });
 
   test("Le rover avance de 1 vers le Nord", () => {
     map = new Map(5, 5);
@@ -14,7 +23,7 @@ describe("Tests de déplacement du Rover", () => {
     rover.goAhead();
 
     const etat: IRoverState = rover.getState();
-    expect(etat.getActualPositions().coordinates).toStrictEqual({x: 0, y: 1});
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 1));
     expect(etat.getOrientation()).toBe(Orientation.NORTH);
   });
 
@@ -27,7 +36,7 @@ describe("Tests de déplacement du Rover", () => {
     rover.goAhead();
 
     const etat: IRoverState = rover.getState();
-    expect(etat.getActualPositions().coordinates).toStrictEqual({x: 1, y: 0});
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(1, 0));
     expect(etat.getOrientation()).toBe(Orientation.EST);
   });
 
@@ -39,7 +48,7 @@ describe("Tests de déplacement du Rover", () => {
     rover.goBack();
 
     const etat: IRoverState = rover.getState();
-    expect(etat.getActualPositions().coordinates).toStrictEqual({x: 0, y: 4});
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 4));
     expect(etat.getOrientation()).toBe(Orientation.NORTH);
   });
 
@@ -52,7 +61,7 @@ describe("Tests de déplacement du Rover", () => {
     rover.goAhead();
 
     const etat: IRoverState = rover.getState();
-    expect(etat.getActualPositions().coordinates).toStrictEqual({x: 4, y: 0});
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(4, 0));
     expect(etat.getOrientation()).toBe(Orientation.WEST);
   });
 
@@ -66,7 +75,7 @@ describe("Tests de déplacement du Rover", () => {
     }
 
     const etat: IRoverState = rover.getState();
-    expect(etat.getActualPositions().coordinates).toStrictEqual({x: 0, y: 0});
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 0));
     expect(etat.getOrientation()).toBe(Orientation.NORTH);
   });
 });

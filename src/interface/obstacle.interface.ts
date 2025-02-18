@@ -1,8 +1,8 @@
-import {Obstacle} from "../class/obstacle";
+import {Coordinates} from "../class/coordinates";
 
 
 export interface IObstacle {
-  getObstaclePosition(): Obstacle;
+  getObstaclePosition(): Coordinates;
 }
 
 export abstract class AObstacle implements IObstacle {
@@ -14,5 +14,5 @@ export abstract class AObstacle implements IObstacle {
     this.y = y;
   }
 
-  abstract getObstaclePosition(): Obstacle;
+    abstract getObstaclePosition(): Coordinates;
 }

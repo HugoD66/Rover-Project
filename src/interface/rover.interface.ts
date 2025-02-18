@@ -47,3 +47,4 @@ export abstract class InterpreterDirection {
   static readonly GAUCHE = 'G';
   static readonly RECULER = 'R';
 }
+

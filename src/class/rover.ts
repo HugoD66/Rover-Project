@@ -14,15 +14,6 @@ export class Rover extends ARover{
         );
     }
 
-
-
-
-
-
-
-
-
-
     //ETAT ROVER
     public getState(): IRoverState {
         return {
@@ -39,19 +30,18 @@ export class Rover extends ARover{
         return this.orientation;
     }
 
-
     //DEPLACEMENT ROVER
     public move(moveForward: boolean): IRoverState {
         const nextPosition: Coordinates = this.calculateNextPosition(moveForward);
 
-        this.positions.coordinates.x = nextPosition.coordinates.x;
-        this.positions.coordinates.y = nextPosition.coordinates.y;
+        this.positions.x = nextPosition.x;
+        this.positions.y = nextPosition.y;
         return this.getState();
     }
 
     public calculateNextPosition(moveForward: boolean): Coordinates {
-        let newX: number = this.positions.coordinates.x;
-        let newY: number = this.positions.coordinates.y;
+        let newX: number = this.positions.x;
+        let newY: number = this.positions.y;
 
         switch (this.orientation) {
             case Orientation.NORTH:
