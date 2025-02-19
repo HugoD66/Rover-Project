@@ -1,3 +1,4 @@
+/*
 import { IEtatRover } from "../interface/rover.interface"
 import {
   IInterpreter,
@@ -85,7 +86,7 @@ export class Interpreter implements IInterpreter {
     nextRoverPositionY: number,
     roverState: IEtatRover
   ): void {
-    const obstacle = this.obstacle?.getObstaclePositions()
+    const obstacle: Obstacle | undefined = this.obstacle?.getObstaclePosition()
 
     if (
       obstacle &&
@@ -104,3 +105,4 @@ export class Interpreter implements IInterpreter {
     return this.commandLine;
   }
 }
+*/

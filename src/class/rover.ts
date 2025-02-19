@@ -1,111 +1,148 @@
-import {IRover, IEtatRover, Orientation} from '../interface/rover.interface';
-import {Map} from './map';
+import {ARover, InterpreterDirection, IRoverState, Orientation} from '../interface/rover.interface';
+import {Coordinates} from "./coordinates";
+import {Map} from "./map";
+import {Obstacle} from "./obstacle";
 
-//Sert à instancier une classe Rover / Deplacer / Tourner
-export class Rover implements IRover, IEtatRover {
-    private positionX: number;
-    private positionY: number;
-    private orientation: string;
+export class Rover extends ARover{
+    map?: Map;
 
-    private map: Map;
-
-    constructor(
-      initialX: number,
-      initialY: number,
-      initialOrientation: string,
-      map: Map
-    ) {
-        this.positionX = initialX;
-        this.positionY = initialY;
-        this.orientation = initialOrientation;
-        this.map = map;
+    constructor() {
+        super(
+          new Coordinates(0, 0),
+          Orientation.NORTH,
+          //[InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+        );
     }
 
-    //Fonction qui retourne la prochaine position du rover ( vecteur )
-    public calculateNextPosition(moveForward: boolean): { x: number; y: number } {
-        let newX = this.positionX;
-        let newY = this.positionY;
+    public getState(): IRoverState {
+        return {
+            getActualPositions: () => this.positions,
+            getOrientation: () => this.orientation
+        };
+    }
+
+    public getActualPositions(): Coordinates {
+        return this.positions;
+    }
+
+    public getOrientation(): Orientation {
+        return this.orientation;
+    }
+
+    public move(moveForward: boolean, obstacles?: Obstacle[] | null | undefined): IRoverState {
+        const nextPosition: Coordinates = this.calculateNextPosition(moveForward);
+
+        if (obstacles) {
+            for (const obstacle of obstacles) {
+                const obstacleCoordinates = obstacle.getObstaclePosition();
+
+                if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
+                    const returnErrorObstacleFormated = `Obstacle detected at position x: ${obstacleCoordinates.x} y: ${obstacleCoordinates.y}`;
+
+                    console.warn(
+                      `${returnErrorObstacleFormated}. Rover will not move to this position.`
+                    );
+                    return this.getState();
+                }
+            }
+        }
+
+        this.positions.x = nextPosition.x;
+        this.positions.y = nextPosition.y;
+
+        return this.getState();
+    }
+
+
+    public calculateNextPosition(moveForward: boolean): Coordinates {
+        let newX: number = this.positions.x;
+        let newY: number = this.positions.y;
 
         switch (this.orientation) {
-            case Orientation.NORD:
+            case Orientation.NORTH:
                 newY += moveForward ? 1 : -1;
                 break;
             case Orientation.EST:
                 newX += moveForward ? 1 : -1;
                 break;
-            case Orientation.SUD:
+            case Orientation.SOUTH:
                 newY += moveForward ? -1 : 1;
                 break;
-            case Orientation.OUEST:
+            case Orientation.WEST:
                 newX += moveForward ? -1 : 1;
                 break;
         }
 
-        return this.map.validatePosition(newX, newY);
+        return this.map!.validateRoverPositionOnMap(newX, newY);
     }
 
-    //Fonction qui permet de déplacer le rover
-    private move(moveForward: boolean): IEtatRover {
-        const nextPosition = this.calculateNextPosition(moveForward);
-
-        this.positionX = nextPosition.x;
-        this.positionY = nextPosition.y;
-        return this.GetEtat();
+    public goAhead(obstacles?: Obstacle[] | null | undefined): IRoverState {
+        return this.move(true, obstacles);
     }
 
-    //Fonction qui permet de déplacer le rover en avant
-    Avancer(): IEtatRover {
-        return this.move(true);
-    }
-
-    //Fonction qui permet de déplacer le rover en arrière
-    Reculer(): IEtatRover {
+    public goBack(): IRoverState {
         return this.move(false);
     }
 
-    // Méthode permettant de tourner le rover de 90 degrés vers la gauche.
-    // Se référe à un tableau pour calculer le nouvel index avec modulo pour boucler,
-    // met à jour l'orientation et retourne l'état actuel du rover.
-    TournerAGauche(): IEtatRover {
-        const directions = [Orientation.NORD, Orientation.OUEST, Orientation.SUD, Orientation.EST];
+    public turnOnLeft(): IRoverState {
+        const directions = [Orientation.NORTH, Orientation.WEST, Orientation.SOUTH, Orientation.EST];
         const currentIndex = directions.indexOf(this.orientation);
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
-        return this.GetEtat();
+        return this.getState();
     }
 
-    // Méthode permettant de tourner le rover de 90 degrés vers la droite.
-    // Se référe à un tableau et calculer le nouvel index avec modulo pour boucler,
-    // met à jour l'orientation et retourne l'état actuel du rover.
-    TournerADroite(): IEtatRover {
-        const directions = [Orientation.NORD, Orientation.EST, Orientation.SUD, Orientation.OUEST];
+
+    public turnOnRight(): IRoverState {
+        const directions = [Orientation.NORTH, Orientation.EST, Orientation.SOUTH, Orientation.WEST];
         const currentIndex = directions.indexOf(this.orientation);
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
-        return this.GetEtat();
+        return this.getState();
     }
 
-    //Fonction qui permet de retourner l'état ACTUEL du rover
-    GetEtat(): IEtatRover {
-        return {
-            GetPositionX: () => this.positionX,
-            GetPositionY: () => this.positionY,
-            GetOrientation: () => this.orientation
-        };
+    public setCommandLine(commandLine: string[]): IRoverState {
+        this.commandLine = commandLine;
+        return this.getState();
     }
 
-    //Fonction qui permet de retourner l'orientation du rover
-    GetOrientation(): string {
-        return this.orientation;
-    }
+    public executeCommandLine(): IRoverState {
+        const commandLine = this.commandLine;
 
-    //Fonction qui permet de retourner la position sur l'axe des X du rover
-    GetPositionX(): number {
-        return this.positionX;
-    }
+        if (!commandLine) {
+            console.log('No command line');
+        } else {
+            const obstacles = this.map?.getObstacles();
 
-    //Fonction qui permet de retourner la position sur l'axe des Y du rover
-    GetPositionY(): number {
-        return this.positionY;
+            for (let i = 0; i < commandLine.length; i++) {
+                const command = commandLine[i];
+                switch (command) {
+                    case InterpreterDirection.AHEAD:
+                        this.goAhead(obstacles);
+                        break;
+                    case InterpreterDirection.RIGHT:
+                        this.turnOnRight();
+                        this.goAhead(obstacles);
+                        break;
+                    case InterpreterDirection.LEFT:
+                        this.turnOnLeft();
+                        this.goAhead(obstacles);
+
+                        break;
+                    case InterpreterDirection.BACK:
+                        this.turnOnLeft();
+                        this.turnOnLeft();
+                        this.goAhead(obstacles);
+
+                        break;
+                    default:
+                        console.log('Invalid command');
+                }
+            }
+        }
+
+
+        return this.getState();
+
     }
 }

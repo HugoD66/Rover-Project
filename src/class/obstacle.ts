@@ -1,21 +1,12 @@
-export class Obstacle {
-    private x: number;
-    private y: number;
+import {AObstacle} from "../interface/obstacle.interface";
+import {Coordinates} from "./coordinates";
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+export class Obstacle extends AObstacle {
+    public constructor(x: number, y: number) {
+        super(x, y);
     }
 
-    public getObstaclePositions() {
-        return {x: this.x, y: this.y};
-    }
-
-    private GetPositionX(): number {
-        return this.x;
-    }
-
-    private GetPositionY(): number {
-        return this.y;
+    public getObstaclePosition(): Coordinates {
+        return new Coordinates(this.x, this.y);
     }
 }

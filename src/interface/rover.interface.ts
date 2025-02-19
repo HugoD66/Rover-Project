@@ -1,39 +1,55 @@
-// Interface générale pour le rover.
-export interface IRover {
-  Avancer(): IEtatRover;
-  Reculer(): IEtatRover;
-  TournerAGauche(): IEtatRover;
-  TournerADroite(): IEtatRover;
+import { Map } from '../class/map';
+import {Coordinates} from "../class/coordinates";
+
+export interface IRoverDeplacement {
+  goAhead(): IRoverState;
+  goBack(): IRoverState;
+  turnOnLeft(): IRoverState;
+  turnOnRight(): IRoverState;
+  executeCommandLine(): IRoverState;
 }
 
-// Interface pour avoir l'état actuel du rover
-export interface IEtatRover {
-  GetPositionX(): number;
-  GetPositionY(): number;
-  GetOrientation(): Orientation;
+export interface IRoverState {
+  getActualPositions(): Coordinates;
+  getOrientation(): Orientation;
 }
 
-// Interface pour avoir les différentes orientations possibles
+export abstract class ARover implements IRoverDeplacement, IRoverState {
+  protected positions: Coordinates;
+  protected orientation: string;
+  protected commandLine: string[] | null;
+
+  protected constructor(
+    positions: Coordinates,
+    orientation: string,
+    commandLine: string[] | null = null
+  ) {
+    this.positions = positions;
+    this.orientation = orientation;
+    this.commandLine = commandLine;
+  }
+
+  public abstract goAhead(): IRoverState;
+  public abstract goBack(): IRoverState;
+  public abstract turnOnRight(): IRoverState;
+  public abstract turnOnLeft(): IRoverState;
+  public abstract executeCommandLine(): IRoverState;
+  public abstract getActualPositions(): Coordinates;
+  public abstract getOrientation(): Orientation;
+}
+
+
 export abstract class Orientation {
-  static readonly NORD = 'N';
+  static readonly NORTH = 'N';
   static readonly EST = 'E';
-  static readonly SUD = 'S';
-  static readonly OUEST = 'W';
+  static readonly SOUTH = 'S';
+  static readonly WEST = 'W';
 }
 
-// Exercice du typage non terminé
-/*
-export class EntierPositif {
-  private value: number;
+export abstract class InterpreterDirection {
+  static readonly AHEAD = 'AHEAD';
+  static readonly RIGHT = 'RIGHT';
+  static readonly LEFT = 'LEFT';
+  static readonly BACK = 'BACK';
+}
 
-  constructor(value: number) {
-    if (value < 0) {
-      throw new Error('La valeur doit être positive');
-    }
-    this.value = value;
-  }
-
-  getValue(): number {
-    return this.value;
-  }
-}*/
