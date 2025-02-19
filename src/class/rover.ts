@@ -10,7 +10,7 @@ export class Rover extends ARover{
         super(
           new Coordinates(0, 0),
           Orientation.NORTH,
-          [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+          //[InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
         );
     }
 
@@ -98,6 +98,11 @@ export class Rover extends ARover{
         const currentIndex = directions.indexOf(this.orientation);
         const nextIndex = (currentIndex + 1) % directions.length;
         this.orientation = directions[nextIndex];
+        return this.getState();
+    }
+
+    public setCommandLine(commandLine: string[]): IRoverState {
+        this.commandLine = commandLine;
         return this.getState();
     }
 
