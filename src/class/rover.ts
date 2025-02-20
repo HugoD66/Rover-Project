@@ -33,17 +33,9 @@ export class Rover extends ARover{
         const nextPosition: Coordinates = this.calculateNextPosition(moveForward);
 
         if (obstacles) {
-            for (const obstacle of obstacles) {
-                const obstacleCoordinates = obstacle.getObstaclePosition();
-
-                if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
-                    const returnErrorObstacleFormated = `Obstacle detected at position x: ${obstacleCoordinates.x} y: ${obstacleCoordinates.y}`;
-
-                    console.warn(
-                      `${returnErrorObstacleFormated}. Rover will not move to this position.`
-                    );
-                    return this.getState();
-                }
+            const isPathBlocked: IRoverState | undefined = this.checkIfPathBlocked(obstacles, nextPosition);
+            if (isPathBlocked) {
+                return isPathBlocked;
             }
         }
 
@@ -51,6 +43,22 @@ export class Rover extends ARover{
         this.positions.y = nextPosition.y;
 
         return this.getState();
+    }
+
+    public checkIfPathBlocked(obstacles: Obstacle[], nextPosition: Coordinates): IRoverState | undefined {
+        for (const obstacle of obstacles) {
+            const obstacleCoordinates = obstacle.getObstaclePosition();
+
+            if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
+                const returnErrorObstacleFormated = `Obstacle detected at position x: ${obstacleCoordinates.x} y: ${obstacleCoordinates.y}`;
+
+                console.warn(
+                  `${returnErrorObstacleFormated}. Rover will not move to this position.`
+                );
+                return this.getState();
+            }
+        }
+        return undefined;
     }
 
 
@@ -141,8 +149,6 @@ export class Rover extends ARover{
             }
         }
 
-
         return this.getState();
-
     }
 }
