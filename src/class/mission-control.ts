@@ -1,4 +1,4 @@
-import { IRoverState } from "../interface/rover.interface";
+import {IRover, IRoverState} from "../interface/rover.interface";
 import { IMissionControl } from "../interface/mission-control.interface";
 import {Rover} from "./rover";
 import {RoverInterpreter} from "./rover-interpreter";
@@ -10,17 +10,31 @@ export class MissionControl implements IMissionControl {
     this.rover = rover;
   }
 
-  public sendCommand(command: string): IRoverState {
-    console.log(`Mission de control: Envoi de commande '${command}'`);
-    RoverInterpreter.interpreter(command, this.rover);
+  public interpreter(commands: string, rover: Rover): IRoverState {
+    for (let command of commands) {
+      this.interpreterCommand(command, rover);
+    }
     return this.getRoverState();
   }
 
+  public interpreterCommand(command: string, rover: IRover): IRoverState {
+    if (command.length !== 1) {
+      throw new Error('Invalid command');
+    }
+    switch (command) {
+      case 'A':
+        return rover.goAhead();
+      case 'D':
+        return rover.turnOnRight();
+      case 'G':
+        return rover.turnOnLeft();
+      default:
+        return rover.goBack();
+
+    }
+  }
+
   public getRoverState(): IRoverState {
-    const state = this.rover.getState();
-    console.log(
-      `Rover position :  (${state.getActualPositions().x}, ${state.getActualPositions().y}) facing ${state.getOrientation()}`
-    );
-    return state;
+    return this.rover.getState();
   }
 }
