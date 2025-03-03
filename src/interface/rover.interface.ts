@@ -1,4 +1,3 @@
-import { Map } from '../class/map';
 import {Coordinates} from "../class/coordinates";
 
 export interface IRoverDeplacement {
@@ -6,7 +5,6 @@ export interface IRoverDeplacement {
   goBack(): IRoverState;
   turnOnLeft(): IRoverState;
   turnOnRight(): IRoverState;
-  executeCommandLine(): IRoverState;
 }
 
 export interface IRoverState {
@@ -14,7 +12,12 @@ export interface IRoverState {
   getOrientation(): Orientation;
 }
 
-export abstract class ARover implements IRoverDeplacement, IRoverState {
+export interface RoverCommandInterface {
+  executeCommandLine(): IRoverState;
+  setCommandLine(commandLine: string[]): IRoverState;
+}
+
+export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
   protected positions: Coordinates;
   protected orientation: string;
   protected commandLine: string[] | null;
@@ -33,10 +36,14 @@ export abstract class ARover implements IRoverDeplacement, IRoverState {
   public abstract goBack(): IRoverState;
   public abstract turnOnRight(): IRoverState;
   public abstract turnOnLeft(): IRoverState;
-  public abstract executeCommandLine(): IRoverState;
+
   public abstract getActualPositions(): Coordinates;
   public abstract getOrientation(): Orientation;
+
+  public abstract executeCommandLine(): IRoverState;
+  public abstract setCommandLine(commandLine: string[]): IRoverState;
 }
+
 
 
 export abstract class Orientation {

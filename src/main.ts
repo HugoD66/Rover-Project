@@ -1,6 +1,7 @@
 import { Rover } from './class/rover';
 import { Map } from './class/map';
 import {Obstacle} from "./class/obstacle";
+import {InterpreterDirection} from "./interface/rover.interface";
 
 function moveRover() {
     const map = new Map(5, 5, [new Obstacle(0, 2)]);
@@ -8,6 +9,9 @@ function moveRover() {
 
     rover.map = map;
 
+    rover.setCommandLine(
+      [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+    )
     rover.executeCommandLine();
     /*
     Without commandline :
