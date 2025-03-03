@@ -6,6 +6,9 @@ export class Obstacle extends AObstacle {
         super(x, y);
     }
 
+    /**
+     * Fonction de **bas niveau**: Retourne la position d'un obstacle.
+     */
     public getObstaclePosition(): Coordinates {
         return new Coordinates(this.x, this.y);
     }
