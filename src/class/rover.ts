@@ -2,6 +2,7 @@ import {ARover, InterpreterDirection, IRoverState, Orientation} from '../interfa
 import {Coordinates} from "./coordinates";
 import {Map} from "./map";
 import {Obstacle} from "./obstacle";
+import {ObstacleError} from "./obstacle-error";
 
 export class Rover extends ARover{
     map?: Map;
@@ -10,7 +11,7 @@ export class Rover extends ARover{
         super(
           new Coordinates(0, 0),
           Orientation.NORTH,
-          //[InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+          [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
         );
     }
 
@@ -50,12 +51,7 @@ export class Rover extends ARover{
             const obstacleCoordinates = obstacle.getObstaclePosition();
 
             if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
-                const returnErrorObstacleFormated = `Obstacle detected at position x: ${obstacleCoordinates.x} y: ${obstacleCoordinates.y}`;
-
-                console.warn(
-                  `${returnErrorObstacleFormated}. Rover will not move to this position.`
-                );
-                return this.getState();
+                throw new ObstacleError(obstacleCoordinates, this.getState());
             }
         }
         return undefined;
