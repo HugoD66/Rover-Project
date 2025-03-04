@@ -15,12 +15,7 @@ export class Rover extends ARover{
           map
         )
         this.movement = new RoverMovement(this.map);
-
     }
-
-/*    private Decode(roverStateString: string) {
-        const elements: IRoverState = JSON.parse(roverStateString);
-    }*/
 
     public getState(): IRoverState {
         return {
