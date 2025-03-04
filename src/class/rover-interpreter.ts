@@ -1,26 +1,34 @@
-import {IRover, IRoverState} from "../interface/rover.interface";
+import {IRoverState} from "../interface/rover.interface";
+import {Rover} from "./rover";
 
 export class RoverInterpreter {
-  static interpreter(commands: string, rover: IRover): void {
+  static interpreter(commands: string, rover: Rover): IRoverState {
     for (let char of commands) {
-      this.interpreterChar(char, rover);
+      rover = this.interpreterChar(char, rover);
     }
+    return rover.getState();
   }
 
-  private static interpreterChar(char: string, rover: IRover): IRoverState {
+  private static interpreterChar(char: string, rover: Rover): Rover {
     if (char.length !== 1) {
       throw new Error('Invalid command');
     }
     switch (char) {
       case 'A':
-        return rover.goAhead();
+        rover.goAhead();
+        break;
       case 'D':
-        return rover.turnOnRight();
+        rover.turnOnRight();
+        break;
       case 'G':
-        return rover.turnOnLeft();
+        rover.turnOnLeft();
+        break;
+      case 'B':
+        rover.goBack();
+        break;
       default:
-        return rover.goBack();
-
+        throw new Error("Unknown command");
     }
+    return rover;
   }
 }

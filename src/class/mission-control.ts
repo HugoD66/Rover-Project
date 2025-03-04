@@ -1,37 +1,42 @@
-import {IRover, IRoverState} from "../interface/rover.interface";
+import {InterpreterDirection, IRoverState} from "../interface/rover.interface";
 import { IMissionControl } from "../interface/mission-control.interface";
 import {Rover} from "./rover";
 import {RoverInterpreter} from "./rover-interpreter";
+import {Obstacle} from "./obstacle";
+import {Map} from "./map";
+import * as readline from "node:readline";
+import * as process from "node:process";
 
 export class MissionControl implements IMissionControl {
+  private readline;
   private rover: Rover;
 
-  constructor(rover: Rover) {
+  public constructor(rover: Rover) {
     this.rover = rover;
+    this.readline = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
   }
 
-  public interpreter(commands: string, rover: Rover): IRoverState {
-    for (let command of commands) {
-      this.interpreterCommand(command, rover);
-    }
-    return this.getRoverState();
+  public Decode(roverStateString: string): IRoverState {
+    return JSON.parse(roverStateString);
   }
 
-  public interpreterCommand(command: string, rover: IRover): IRoverState {
-    if (command.length !== 1) {
-      throw new Error('Invalid command');
-    }
-    switch (command) {
-      case 'A':
-        return rover.goAhead();
-      case 'D':
-        return rover.turnOnRight();
-      case 'G':
-        return rover.turnOnLeft();
-      default:
-        return rover.goBack();
+  public goAhead(): IRoverState {
+    return RoverInterpreter.interpreter("A", this.rover);
+  }
 
-    }
+  public goBack(): IRoverState {
+    return RoverInterpreter.interpreter("B", this.rover);
+  }
+
+  public turnOnLeft(): IRoverState {
+    return RoverInterpreter.interpreter("G", this.rover);
+  }
+
+  public turnOnRight(): IRoverState {
+    return RoverInterpreter.interpreter("D", this.rover);
   }
 
   public getRoverState(): IRoverState {

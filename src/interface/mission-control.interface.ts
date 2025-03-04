@@ -2,7 +2,10 @@ import {IRoverState} from "./rover.interface";
 import {Rover} from "../class/rover";
 
 export interface IMissionControl {
-  interpreter(commands: string, rover: Rover): IRoverState;
-  interpreterCommand(command: string, rover: Rover): void;
+  Decode(roverStateString: string): IRoverState;
+  goAhead(): IRoverState;
+  goBack(): IRoverState;
+  turnOnLeft(): IRoverState;
+  turnOnRight(): IRoverState;
   getRoverState(): IRoverState;
 }

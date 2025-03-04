@@ -18,6 +18,10 @@ export class Rover extends ARover{
 
     }
 
+/*    private Decode(roverStateString: string) {
+        const elements: IRoverState = JSON.parse(roverStateString);
+    }*/
+
     public getState(): IRoverState {
         return {
             getActualPositions: () => this.positions,
