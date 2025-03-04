@@ -8,7 +8,7 @@ describe("Tests de déplacement du Rover", () => {
   let map: Map;
 
   test("Le rover est initialisé à la position (0, 0) et orienté vers le Nord", () => {
-    rover = new Rover();
+    rover = new Rover(map);
 
     const etat: IRoverState = rover.getState();
     expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 0));
@@ -17,8 +17,7 @@ describe("Tests de déplacement du Rover", () => {
 
   test("Le rover avance de 1 vers le Nord", () => {
     map = new Map(5, 5);
-    rover = new Rover();
-    rover.map = map;
+    rover = new Rover(map);
 
     rover.goAhead();
 
@@ -29,8 +28,7 @@ describe("Tests de déplacement du Rover", () => {
 
   test("Le rover avance de 1 vers l'Est", () => {
     map = new Map(5, 5);
-    rover = new Rover();
-    rover.map = map;
+    rover = new Rover(map);
 
     rover.turnOnRight();
     rover.goAhead();
@@ -42,8 +40,7 @@ describe("Tests de déplacement du Rover", () => {
 
   test("Le rover avance de 1 vers le Sud et dépasse limite map", () => {
     map = new Map(5, 5);
-    rover = new Rover();
-    rover.map = map;
+    rover = new Rover(map);
 
     rover.goBack();
 
@@ -54,8 +51,7 @@ describe("Tests de déplacement du Rover", () => {
 
   test("Le rover avance de 1 vers l'Ouest et dépasse limite map", () => {
     map = new Map(5, 5);
-    rover = new Rover();
-    rover.map = map;
+    rover = new Rover(map);
 
     rover.turnOnLeft();
     rover.goAhead();
@@ -67,8 +63,7 @@ describe("Tests de déplacement du Rover", () => {
 
   test("Le rover avance de 5 vers le nord et dépasse limite map", () => {
     map = new Map(5, 5);
-    rover = new Rover();
-    rover.map = map;
+    rover = new Rover(map);
 
     for(let i = 0; i < 5; i++) {
       rover.goAhead();

@@ -9,9 +9,7 @@ describe("Tests de rotation du Rover", () => {
 
   beforeEach(() => {
     map = new Map(5, 5);
-    rover = new Rover();
-
-    rover.map = map;
+    rover = new Rover(map);
   });
 
   test("Le rover tourne à gauche", () => {

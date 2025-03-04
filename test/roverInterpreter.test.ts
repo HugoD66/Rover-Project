@@ -10,9 +10,7 @@ describe("Test de l'interpréteur", () => {
 
   test("Le rover suit une chaine de commande sans rencontrer d'obstacle", () => {
       map = new Map(5, 5, [new Obstacle(2, 2)]);
-      rover = new Rover();
-
-      rover.map = map;
+      rover = new Rover(map);
 
       rover.setCommandLine([InterpreterDirection.AHEAD,InterpreterDirection.AHEAD,InterpreterDirection.AHEAD])
       rover.executeCommandLine();
@@ -24,9 +22,7 @@ describe("Test de l'interpréteur", () => {
 
   test("Le rover suit une chaine de commande et rencontre un obstacle", () => {
     map = new Map(5, 5, [new Obstacle(0, 2)]);
-    rover = new Rover();
-
-    rover.map = map;
+    rover = new Rover(map);
 
     rover.setCommandLine([InterpreterDirection.AHEAD,InterpreterDirection.AHEAD,InterpreterDirection.AHEAD])
     rover.executeCommandLine();

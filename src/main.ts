@@ -5,9 +5,9 @@ import {InterpreterDirection} from "./interface/rover.interface";
 
 function moveRover() {
     const map = new Map(5, 5, [new Obstacle(0, 2)]);
-    const rover = new Rover();
+    const rover = new Rover(map);
 
-    rover.map = map;
+
 
     rover.setCommandLine(
       [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]

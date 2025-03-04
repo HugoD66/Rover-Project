@@ -1,18 +1,21 @@
-import {ARover, InterpreterDirection, IRoverState, Orientation} from '../interface/rover.interface';
+import {ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation} from '../interface/rover.interface';
 import {Coordinates} from "./coordinates";
 import {Map} from "./map";
 import {Obstacle} from "./obstacle";
-import {ObstacleError} from "./obstacle-error";
+import {RoverMovement} from "./rover-movement";
 
 export class Rover extends ARover{
-    map?: Map;
+    private movement: IRoverMovement;
 
-    constructor() {
+    constructor(map: Map) {
         super(
           new Coordinates(0, 0),
           Orientation.NORTH,
           //[InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
-        );
+          map
+        )
+        this.movement = new RoverMovement(this.map);
+
     }
 
     public getState(): IRoverState {
@@ -30,64 +33,16 @@ export class Rover extends ARover{
         return this.orientation;
     }
 
-    public move(moveForward: boolean, obstacles?: Obstacle[] | null | undefined): IRoverState {
-        const nextPosition: Coordinates = this.calculateNextPosition(moveForward);
+    public move(moveForward: boolean, obstacles?: Obstacle[] | null): IRoverState {
+        const nextPosition: Coordinates = this.movement.calculateNextPosition(this.positions, this.orientation, moveForward);
 
-        if (obstacles) {
-            try {
-                this.checkIfPathBlocked(obstacles, nextPosition);
-            } catch (error) {
-                if (error instanceof ObstacleError) {
-                    console.warn(`Rover movement blocked: ${error.message}`);
-                    return this.getState();
-                } else {
-                    throw error;
-                }
-            }
-            /* const isPathBlocked: IRoverState | undefined = this.checkIfPathBlocked(obstacles, nextPosition);
-            if (isPathBlocked) {
-                return isPathBlocked;
-            }*/
+        if (obstacles?.some(obstacle => obstacle.isObstacleOnNextPosition(nextPosition.x, nextPosition.y))) {
+            console.warn(`Rover movement blocked at (${nextPosition.x}, ${nextPosition.y})`);
+            return this.getState();
         }
 
-        this.positions.x = nextPosition.x;
-        this.positions.y = nextPosition.y;
-
+        this.positions = nextPosition;
         return this.getState();
-    }
-
-    public checkIfPathBlocked(obstacles: Obstacle[], nextPosition: Coordinates): IRoverState | undefined {
-        for (const obstacle of obstacles) {
-            const obstacleCoordinates = obstacle.getObstaclePosition();
-
-            if (obstacleCoordinates.x === nextPosition.x && obstacleCoordinates.y === nextPosition.y) {
-                throw new ObstacleError(obstacleCoordinates, this.getState());
-            }
-        }
-        return undefined;
-    }
-
-
-    public calculateNextPosition(moveForward: boolean): Coordinates {
-        let newX: number = this.positions.x;
-        let newY: number = this.positions.y;
-
-        switch (this.orientation) {
-            case Orientation.NORTH:
-                newY += moveForward ? 1 : -1;
-                break;
-            case Orientation.EST:
-                newX += moveForward ? 1 : -1;
-                break;
-            case Orientation.SOUTH:
-                newY += moveForward ? -1 : 1;
-                break;
-            case Orientation.WEST:
-                newX += moveForward ? -1 : 1;
-                break;
-        }
-
-        return this.map!.validateRoverPositionOnMap(newX, newY);
     }
 
     public goAhead(obstacles?: Obstacle[] | null | undefined): IRoverState {

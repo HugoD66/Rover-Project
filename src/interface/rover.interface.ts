@@ -1,4 +1,6 @@
 import {Coordinates} from "../class/coordinates";
+import {Map} from "../class/map";
+
 
 export interface IRoverDeplacement {
   goAhead(): IRoverState;
@@ -7,29 +9,40 @@ export interface IRoverDeplacement {
   turnOnRight(): IRoverState;
 }
 
+export interface IRoverMovement {
+  calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): Coordinates;
+}
+
 export interface IRoverState {
   getActualPositions(): Coordinates;
   getOrientation(): Orientation;
 }
+
 
 export interface RoverCommandInterface {
   executeCommandLine(): IRoverState;
   setCommandLine(commandLine: string[]): IRoverState;
 }
 
+
+
+
 export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
   protected positions: Coordinates;
   protected orientation: string;
   protected commandLine: string[] | null;
+  protected map: Map;
 
   protected constructor(
     positions: Coordinates,
     orientation: string,
+    map: Map,
     commandLine: string[] | null = null
   ) {
     this.positions = positions;
     this.orientation = orientation;
     this.commandLine = commandLine;
+    this.map = map;
   }
 
   public abstract goAhead(): IRoverState;

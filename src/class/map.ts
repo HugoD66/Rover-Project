@@ -1,14 +1,20 @@
 import {Obstacle} from "./obstacle";
 import {Coordinates} from "./coordinates";
-import {AMap} from "../interface/map.interface";
+import {IMap} from "../interface/map.interface";
 
-export class Map extends AMap {
+export class Map implements IMap {
+  protected readonly mapLimitX: number;
+  protected readonly mapLimitY: number;
+  protected  obstacles?: Obstacle[] | null | undefined;
+
   constructor(
     mapLimitX: number,
     mapLimitY: number,
     obstacles?: Obstacle[] | null | undefined
   ) {
-    super(mapLimitX, mapLimitY, obstacles);
+    this.mapLimitX = mapLimitX;
+    this.mapLimitY = mapLimitY;
+    this.obstacles = obstacles
   }
 
   public validateRoverPositionOnMap(x: number, y: number): Coordinates {
