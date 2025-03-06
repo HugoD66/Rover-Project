@@ -11,7 +11,6 @@ export class Rover extends ARover{
         super(
           new Coordinates(0, 0),
           Orientation.NORTH,
-          //[InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
           map
         )
         this.movement = new RoverMovement(this.map);

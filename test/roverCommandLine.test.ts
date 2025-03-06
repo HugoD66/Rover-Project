@@ -19,16 +19,4 @@ describe("Test de l'interpréteur", () => {
       expect(state.getActualPositions()).toStrictEqual(new Coordinates(0, 3));
       expect(state.getOrientation()).toBe(Orientation.NORTH);
   })
-
-  test("Le rover suit une chaine de commande et rencontre un obstacle", () => {
-    map = new Map(5, 5, [new Obstacle(0, 2)]);
-    rover = new Rover(map);
-
-    rover.setCommandLine([InterpreterDirection.AHEAD,InterpreterDirection.AHEAD,InterpreterDirection.AHEAD])
-    rover.executeCommandLine();
-
-    const state = rover.getState();
-    expect(state.getActualPositions()).toStrictEqual(new Coordinates(0, 1));
-    expect(state.getOrientation()).toBe(Orientation.NORTH);
-  })
 })

@@ -1,7 +1,6 @@
 import {Coordinates} from "../class/coordinates";
 import {Map} from "../class/map";
 
-
 export interface IRoverDeplacement {
   goAhead(): IRoverState;
   goBack(): IRoverState;
@@ -18,14 +17,10 @@ export interface IRoverState {
   getOrientation(): Orientation;
 }
 
-
 export interface RoverCommandInterface {
   executeCommandLine(): IRoverState;
   setCommandLine(commandLine: string[]): IRoverState;
 }
-
-
-
 
 export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
   protected positions: Coordinates;
@@ -56,8 +51,6 @@ export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCom
   public abstract executeCommandLine(): IRoverState;
   public abstract setCommandLine(commandLine: string[]): IRoverState;
 }
-
-
 
 export abstract class Orientation {
   static readonly NORTH = 'N';
