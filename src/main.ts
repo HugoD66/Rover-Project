@@ -1,58 +1,26 @@
-import { Rover } from './class/rover';
-import { Map } from './class/map';
-import {Obstacle} from "./class/obstacle";
-import {InterpreterDirection} from "./interface/rover.interface";
-import {MissionControl} from "./class/mission-control";
+import { Interpreter } from "./interpreter/interpreter-export";
+import {InterpreterDirection} from "./rover/interface/rover.interface";
+import { instantiateMissionControl } from "./mission-control/main.mission-control";
+import {instantiateRover} from "./rover/main-rover";
 
-function moveRover() {
-    const map = new Map(5, 5, [new Obstacle(0, 2)]);
-    const rover = new Rover(map);
-    const missionControl = new MissionControl(rover);
+function runMission() {
+    const rover = instantiateRover();
+    const missionControl = instantiateMissionControl(rover);
 
-    console.log("Initial State:", missionControl.getRoverState().getOrientation(), missionControl.getRoverState().getActualPositions());
+    const commands = [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+    const interpreter = new Interpreter(missionControl, commands);
 
-    missionControl.goAhead();
-    console.log("After Move Forward:",  missionControl.getRoverState().getOrientation(), missionControl.getRoverState().getActualPositions());
+    console.log("Initial State:",
+      "\nOrientation:", missionControl.getRoverState().getOrientation(),
+      "\nPositions:", missionControl.getRoverState().getActualPositions()
+    );
 
-    missionControl.turnOnRight();
-    console.log("After Turning Right:",  missionControl.getRoverState().getOrientation(), missionControl.getRoverState().getActualPositions());
+    interpreter.executeCommands();
 
-
-
-
-    //      COMMAND LINE
-   /*
-   const map = new Map(5, 5, [new Obstacle(0, 2)]);
-    const rover = new Rover(map);
-
-   rover.setCommandLine(
-      [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
-    )
-    rover.executeCommandLine();
-
-    const position = rover.getActualPositions();
-    const orientation = rover.getOrientation();
-    console.log(`Position du rover : (${position.x}, ${position.y})`);
-    console.log(`Orientation du rover : ${orientation}`);
-
-    */
-
-    //    Without commandline :
-    /*
-    rover.goAhead();
-    rover.turnOnRight();
-    rover.goAhead();
-    const position = rover.getActualPositions();
-    const orientation = rover.getOrientation();
-    console.log(`Position du rover : (${position.x}, ${position.y})`);
-    console.log(`Orientation du rover : ${orientation}`);
-    */
-
-
-
-
-
-
+    console.log("Final State:",
+      "\nOrientation:", missionControl.getRoverState().getOrientation(),
+      "\nPositions:", missionControl.getRoverState().getActualPositions()
+    );
 }
 
-moveRover();
+runMission();
