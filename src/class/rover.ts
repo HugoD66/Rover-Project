@@ -15,7 +15,6 @@ export class Rover extends ARover{
           map
         )
         this.movement = new RoverMovement(this.map);
-
     }
 
     public getState(): IRoverState {
