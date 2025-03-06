@@ -1,5 +1,5 @@
-import {Obstacle} from "../src/class/obstacle";
-import {Coordinates} from "../src/class/coordinates";
+import {Obstacle} from "../src/rover/class/obstacle";
+import {Coordinates} from "../src/rover/class/coordinates";
 
 describe("Tests de création des obstacles", () => {
   let obstacle: Obstacle;

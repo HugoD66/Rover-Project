@@ -1,7 +1,7 @@
-import { Rover } from "../src/class/rover";
-import {IRoverState, Orientation} from "../src/interface/rover.interface";
-import { Map } from "../src/class/map";
-import {Coordinates} from "../src/class/coordinates";
+import { Rover } from "../src/rover/class/rover";
+import {IRoverState, Orientation} from "../src/rover/interface/rover.interface";
+import { Map } from "../src/rover/class/map";
+import {Coordinates} from "../src/rover/class/coordinates";
 
 describe("Tests de déplacement du Rover", () => {
   let rover: Rover;

@@ -1,6 +1,6 @@
-import { Map } from "../src/class/map";
-import { Obstacle } from "../src/class/obstacle";
-import { Coordinates } from "../src/class/coordinates";
+import { Map } from "../src/rover/class/map";
+import { Obstacle } from "../src/rover/class/obstacle";
+import { Coordinates } from "../src/rover/class/coordinates";
 
 describe("Tests de la carte", () => {
   let map: Map;
