@@ -1,8 +1,8 @@
-import {IRoverState} from "../interface/rover.interface";
+import {InterpreterDirection, IRoverState} from "../interface/rover.interface";
 import {Rover} from "./rover";
 
 export class RoverInterpreter {
-  static interpreter(commands: string, rover: Rover): IRoverState {
+  static interpreter(commands: string[], rover: Rover): IRoverState {
     for (let char of commands) {
       rover = this.interpreterChar(char, rover);
     }
@@ -10,20 +10,21 @@ export class RoverInterpreter {
   }
 
   private static interpreterChar(char: string, rover: Rover): Rover {
-    if (char.length !== 1) {
+    if (char.length < 1) {
       throw new Error('Invalid command');
     }
     switch (char) {
-      case 'A':
+      case InterpreterDirection.AHEAD:
+        console.log('TEST')
         rover.goAhead();
         break;
-      case 'D':
+      case InterpreterDirection.RIGHT:
         rover.turnOnRight();
         break;
-      case 'G':
+      case InterpreterDirection.LEFT:
         rover.turnOnLeft();
         break;
-      case 'B':
+      case InterpreterDirection.BACK:
         rover.goBack();
         break;
       default:

@@ -24,19 +24,19 @@ export class MissionControl implements IMissionControl {
   }
 
   public goAhead(): IRoverState {
-    return RoverInterpreter.interpreter("A", this.rover);
+    return RoverInterpreter.interpreter([InterpreterDirection.AHEAD], this.rover);
   }
 
   public goBack(): IRoverState {
-    return RoverInterpreter.interpreter("B", this.rover);
+    return RoverInterpreter.interpreter([InterpreterDirection.BACK], this.rover);
   }
 
   public turnOnLeft(): IRoverState {
-    return RoverInterpreter.interpreter("G", this.rover);
+    return RoverInterpreter.interpreter([InterpreterDirection.LEFT], this.rover);
   }
 
   public turnOnRight(): IRoverState {
-    return RoverInterpreter.interpreter("D", this.rover);
+    return RoverInterpreter.interpreter([InterpreterDirection.RIGHT], this.rover);
   }
 
   public getRoverState(): IRoverState {
