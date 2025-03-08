@@ -11,48 +11,28 @@ export class MissionControl implements IMissionControl {
     this.commands = commands;
   }
 
-  public goAhead(): void {
-    this.rover?.goAhead();
+  private commandMap: Record<string, () => void> = {
+    [InterpreterDirection.AHEAD]: () => this.rover.goAhead(),
+    [InterpreterDirection.BACK]: () => this.rover.goBack(),
+    [InterpreterDirection.LEFT]: () => this.rover.turnOnLeft(),
+    [InterpreterDirection.RIGHT]: () => this.rover.turnOnRight(),
+  };
+
+  public executeCommand(char: string): void {
+    if (!this.commandMap[char]) {
+      console.warn(`Commande invalide: ${char}`);
+      return;
+    }
+    this.commandMap[char]();
   }
 
-  public goBack(): void {
-    this.rover?.goBack();
-  }
-
-  public turnOnLeft(): void {
-    this.rover?.turnOnLeft();
-  }
-
-  public turnOnRight(): void {
-    this.rover?.turnOnRight();
-  }
 
   public getRoverState(): IRoverState {
     return this.rover?.getState();
   }
 
   public executeCommands(): void {
-    for (let char of this.commands) {
-      this.executeCommand(char);
-    }
+    this.commands.forEach(this.executeCommand.bind(this));
   }
 
-  public executeCommand(char: string): void {
-    switch (char) {
-      case InterpreterDirection.AHEAD:
-        this.goAhead();
-        break;
-      case InterpreterDirection.RIGHT:
-        this.turnOnRight();
-        break;
-      case InterpreterDirection.LEFT:
-        this.turnOnLeft();
-        break;
-      case InterpreterDirection.BACK:
-        this.goBack();
-        break;
-      default:
-        throw new Error(`Unknown command: ${char}`);
-    }
-  }
 }

@@ -20,7 +20,8 @@ describe("Test du Mission Control", () => {
     rover = new Rover(map);
     missionControl = new MissionControl(rover, [InterpreterDirection.AHEAD]);
 
-    missionControl.goAhead();
+    missionControl.executeCommands();
+
     const state = rover.getState();
     expect(state.getActualPositions()).toStrictEqual(new Coordinates(0, 1));
   })
@@ -30,7 +31,8 @@ describe("Test du Mission Control", () => {
     rover = new Rover(map);
     missionControl = new MissionControl(rover, [InterpreterDirection.BACK]);
 
-    missionControl.goBack();
+    missionControl.executeCommands();
+
     const state = rover.getState();
     expect(state.getActualPositions()).toStrictEqual(new Coordinates(0, 4));
   })
@@ -40,7 +42,8 @@ describe("Test du Mission Control", () => {
     rover = new Rover(map);
     missionControl = new MissionControl(rover, [InterpreterDirection.LEFT]);
 
-    missionControl.turnOnLeft();
+    missionControl.executeCommands();
+
     const state = rover.getState();
     expect(state.getActualPositions()).toStrictEqual(new Coordinates(0, 0));
   })
@@ -50,7 +53,8 @@ describe("Test du Mission Control", () => {
     rover = new Rover(map);
     missionControl = new MissionControl(rover, [InterpreterDirection.RIGHT]);
 
-    missionControl.turnOnRight();
+    missionControl.executeCommands();
+
     const state = rover.getState();
     expect(state.getOrientation()).toBe(Orientation.EST);
   })
