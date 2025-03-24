@@ -9,7 +9,11 @@ import { instantiateRover } from "./rover/main-rover";
 function runMission(): void {
     const rover: Rover = instantiateRover();
 
-    const commands: string[] = [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+    //Meet obstacle
+    //const commands: string[] = [InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
+
+    //No obstacle
+    const commands: string[] = [InterpreterDirection.AHEAD, InterpreterDirection.LEFT, InterpreterDirection.AHEAD, InterpreterDirection.AHEAD]
     const missionControl: MissionControl = instantiateMissionControl(rover, commands);
 
     const interpreter: Interpreter = new Interpreter(missionControl);
