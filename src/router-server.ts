@@ -20,7 +20,7 @@ export class RouterServer {
     this.server.listen(this.port, this.host, () => {
       console.log(`RouterServer lancé sur ${this.host}:${this.port}`);
       console.log('──────────── Panel des commandes : ')
-      console.log('↑ A : Avancer')
+      console.log('↑ Z : Avancer')
       console.log('<- Q : Tourner à gauche')
       console.log('-> D : Tourner à droite')
       console.log('↓ S : Reculer')
@@ -55,7 +55,7 @@ export class RouterServer {
         this.interpreter.executeCommand(InterpreterDirection.BACK);
         break;
       default:
-        socket.write("Commande inconnue. Utilisez A, G, D ...\n");
+        socket.write("Commande inconnue. Utilisez Z, Q, D ou S \n");
         return;
     }
   }
@@ -83,8 +83,6 @@ export class RouterServer {
 
   private handleClose(socket: net.Socket): void {
     console.log(`Connexion fermée avec ${socket.remoteAddress}:${socket.remotePort}`);
-
-    //Remove if we don't wanna stop the server
     this.stop();
   }
 

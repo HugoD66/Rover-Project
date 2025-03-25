@@ -23,7 +23,7 @@ Le rover évolue sur une grille (une « map ») et peut rencontrer des obsta
 - **RouterServer** : C’est le serveur TCP qui écoute sur un port et reçoit des commandes (`A`, `Q`, `D`, `S`) pour contrôler le rover en direct.
 
 Les commandes envoyées au rover sont :
-- `A` : Avancer
+- `Z` : Avancer
 - `S` : Reculer
 - `Q` : Tourner à gauche
 - `D` : Tourner à droite
@@ -81,7 +81,7 @@ Ouvrez un second terminal pour vous connecter au rover via netcat (ou telnet) :
 (Sur Windows, si nc n’est pas installé, vous pouvez utiliser telnet 127.0.0.1 12345 ou installer un équivalent de netcat.)
 
 Tapez une commande (ex. A) et validez avec [Entrée] :
-- `A` : Avancer
+- `Z` : Avancer
 - `S` : Reculer
 - `Q` : Tourner à gauche
 - `D` : Tourner à droite
