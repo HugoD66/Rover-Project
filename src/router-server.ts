@@ -42,7 +42,7 @@ export class RouterServer {
 
   private executeCommand(message: string, socket: net.Socket): void {
     switch (message) {
-      case 'A':
+      case 'Z':
         this.interpreter.executeCommand(InterpreterDirection.AHEAD);
         break;
       case 'Q':
@@ -63,7 +63,13 @@ export class RouterServer {
   private handleData(socket: net.Socket, data: Buffer): void {
     let message = data.toString().trim().toUpperCase();
 
-    this.executeCommand(message, socket);
+    if(message.length > 1 ) {
+      for(let messageUnit of message) {
+        this.executeCommand(messageUnit, socket);
+      }
+    } else {
+      this.executeCommand(message, socket);
+    }
 
      const roverState = this.interpreter
       .getMissionControl()
@@ -72,6 +78,7 @@ export class RouterServer {
     console.log('Suite à la commande : ', message);
     console.log('🛸 Orientation du Rover : ', roverState.getOrientation());
     console.log('🪐 Positions du Rover : ', roverState.getActualPositions());
+    socket.write("\nCommande(s) exécutée(s). Entrez la prochaine commande : ");
   }
 
   private handleClose(socket: net.Socket): void {
