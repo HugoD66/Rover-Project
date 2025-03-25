@@ -6,7 +6,7 @@ export class MissionControl implements IMissionControl {
   private rover: Rover;
   private commands: string[];
 
-  public constructor(rover: Rover, commands: string[]) {
+  public constructor(rover: Rover, commands: string[] = []) {
     this.rover = rover;
     this.commands = commands;
   }
@@ -20,7 +20,6 @@ export class MissionControl implements IMissionControl {
 
   public executeCommand(char: string): void {
     if (!this.commandMap[char]) {
-      console.warn(`Commande invalide: ${char}`);
       return;
     }
     this.commandMap[char]();
@@ -34,5 +33,4 @@ export class MissionControl implements IMissionControl {
   public executeCommands(): void {
     this.commands.forEach(this.executeCommand.bind(this));
   }
-
 }

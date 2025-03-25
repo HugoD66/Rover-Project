@@ -30,8 +30,7 @@ export class RoverMovement implements IRoverMovement {
 
     const obstacles = this.map.getObstacles();
     if (obstacles && obstacles.some(obstacle => obstacle.getObstaclePosition().x === newX && obstacle.getObstaclePosition().y === newY)) {
-      //throw new Error(`Le rover a rencontré un obstacle en (${newX}, ${newY}) et ne peut pas continuer.`);
-      console.log(`Obstacle détecté en (${newX}, ${newY}), arrêt du mouvement.`);
+      console.log(`⛔ Obstacle détecté en (${newX}, ${newY}), arrêt du rover. ⛔`);
       return position;
     }
     return this.map.validateRoverPositionOnMap(newX, newY);
