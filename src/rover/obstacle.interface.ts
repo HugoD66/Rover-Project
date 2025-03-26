@@ -1,4 +1,4 @@
-import {Coordinates} from "../class/coordinates";
+import {Coordinates} from "./coordinates";
 
 
 export interface IObstacle {

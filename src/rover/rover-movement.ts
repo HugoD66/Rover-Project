@@ -1,4 +1,4 @@
-import {IRoverMovement, Orientation} from "../interface/rover.interface";
+import {IRoverMovement, Orientation} from "./rover.interface";
 import {Map} from "./map";
 import {Coordinates} from "./coordinates";
 

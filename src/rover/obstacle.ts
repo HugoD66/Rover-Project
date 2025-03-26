@@ -1,4 +1,4 @@
-import {IObstacle} from "../interface/obstacle.interface";
+import {IObstacle} from "./obstacle.interface";
 import {Coordinates} from "./coordinates";
 
 export class Obstacle implements IObstacle {

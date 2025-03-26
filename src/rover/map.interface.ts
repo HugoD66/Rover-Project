@@ -1,6 +1,6 @@
-import {Coordinates} from "../class/coordinates";
-import {Obstacle} from "../class/obstacle";
-import {Map} from "../class/map";
+import {Coordinates} from "./coordinates";
+import {Obstacle} from "./obstacle";
+import {Map} from "./map";
 
 export interface IMap {
   validateRoverPositionOnMap(x: number, y: number): Coordinates;

@@ -1,6 +1,6 @@
 import * as net from 'net';
-import {Interpreter} from "./interpreter/class/interpreter";
-import {InterpreterDirection} from "./rover/interface/rover.interface";
+import {Interpreter} from "../interpreter/interpreter";
+import {InterpreterDirection} from "../rover/rover.interface";
 
 export class RouterServer {
   private host: string;

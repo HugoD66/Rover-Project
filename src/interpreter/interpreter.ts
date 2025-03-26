@@ -1,5 +1,5 @@
-import { MissionControl } from "../../mission-control/mission-control-export";
-import {RouterServer} from "../../router-server";
+import { MissionControl } from "../mission-control/mission-control-export";
+import {RouterServer} from "../network/router-server";
 
 export class Interpreter {
   private missionControl: MissionControl;

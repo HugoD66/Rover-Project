@@ -1,6 +1,6 @@
-import {InterpreterDirection, IRoverState} from "../../rover/interface/rover.interface";
-import { IMissionControl } from "../interface/mission-control.interface";
-import { Rover } from "../../rover/rover-export";
+import {InterpreterDirection, IRoverState} from "../rover/rover.interface";
+import { IMissionControl } from "./mission-control.interface";
+import { Rover } from "../rover/rover-export";
 
 export class MissionControl implements IMissionControl {
   private rover: Rover;

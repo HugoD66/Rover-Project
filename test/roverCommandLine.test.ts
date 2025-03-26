@@ -1,8 +1,8 @@
-import {Rover} from "../src/rover/class/rover";
-import {Map} from "../src/rover/class/map";
-import {Obstacle} from "../src/rover/class/obstacle";
-import {InterpreterDirection, Orientation} from "../src/rover/interface/rover.interface";
-import {Coordinates} from "../src/rover/class/coordinates";
+import {Rover} from "../src/rover/rover";
+import {Map} from "../src/rover/map";
+import {Obstacle} from "../src/rover/obstacle";
+import {InterpreterDirection, Orientation} from "../src/rover/rover.interface";
+import {Coordinates} from "../src/rover/coordinates";
 
 describe("Test de l'interpréteur", () => {
   let rover: Rover;

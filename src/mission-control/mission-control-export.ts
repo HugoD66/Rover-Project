@@ -1,1 +1,1 @@
-export { MissionControl } from "./class/mission-control";
+export { MissionControl } from "./mission-control";

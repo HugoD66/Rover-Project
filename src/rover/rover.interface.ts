@@ -1,5 +1,5 @@
-import {Coordinates} from "../class/coordinates";
-import {Map} from "../class/map";
+import {Coordinates} from "./coordinates";
+import {Map} from "./map";
 
 export interface IRoverDeplacement {
   goAhead(): IRoverState;

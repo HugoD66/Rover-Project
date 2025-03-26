@@ -1,6 +1,6 @@
 import {Obstacle} from "./obstacle";
 import {Coordinates} from "./coordinates";
-import {IMap} from "../interface/map.interface";
+import {IMap} from "./map.interface";
 
 export class Map implements IMap {
   protected readonly mapLimitX: number;

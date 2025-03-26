@@ -1,4 +1,4 @@
-import {ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation} from '../interface/rover.interface';
+import {ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation} from './rover.interface';
 import {Coordinates} from "./coordinates";
 import {Map} from "./map";
 import {Obstacle} from "./obstacle";

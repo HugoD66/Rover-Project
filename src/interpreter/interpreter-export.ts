@@ -1,1 +1,1 @@
-export { Interpreter } from "./class/interpreter";
+export { Interpreter } from "./interpreter";
