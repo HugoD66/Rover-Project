@@ -110,4 +110,10 @@ export class Rover extends ARover{
 
         return this.getState();
     }
+
+
+
+    public getMap(): Map {
+        return this.map;
+    }
 }

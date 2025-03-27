@@ -1,5 +1,6 @@
 import { MissionControl } from "../mission-control/mission-control-export";
 import {RouterServer} from "../network/router-server";
+import {InterpreterDirection} from "../rover/rover.interface";
 
 export class Interpreter {
   private missionControl: MissionControl;
@@ -16,7 +17,20 @@ export class Interpreter {
 
   public executeCommand(command?: string): void {
     if (!command) return;
-    this.missionControl.executeCommand(command);
+
+    let direction: string | null;
+
+    switch (command) {
+      case 'Z': direction = InterpreterDirection.AHEAD; break;
+      case 'Q': direction = InterpreterDirection.LEFT;  break;
+      case 'D': direction = InterpreterDirection.RIGHT; break;
+      case 'S': direction = InterpreterDirection.BACK;  break;
+      default:
+        console.log("Commande inconnue:", command);
+        return;
+    }
+
+    this.missionControl.executeCommand(direction);
   }
 
   public getMissionControl(): MissionControl {

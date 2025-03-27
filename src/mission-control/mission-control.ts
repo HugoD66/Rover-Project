@@ -1,6 +1,7 @@
 import {InterpreterDirection, IRoverState} from "../rover/rover.interface";
 import { IMissionControl } from "./mission-control.interface";
-import { Rover } from "../rover/rover-export";
+import {Obstacle, Rover} from "../rover/rover-export";
+import {Map} from "../rover/rover-export";
 
 export class MissionControl implements IMissionControl {
   private rover: Rover;
@@ -32,5 +33,24 @@ export class MissionControl implements IMissionControl {
 
   public executeCommands(): void {
     this.commands.forEach(this.executeCommand.bind(this));
+  }
+
+
+
+
+  public getMap(): Map {
+    return this.rover.getMap();
+  }
+
+  // ou un helper direct pour la liste d'obstacles:
+  public getObstacles(): Obstacle[] {
+    return this.rover.getMap().getObstacles() || [];
+  }
+
+  public getMapSize(): {width: number; height: number} {
+    return {
+      width: this.rover.getMap().getMapLimitX(),
+      height: this.rover.getMap().getMapLimitY(),
+    };
   }
 }

@@ -42,18 +42,14 @@ Vérifiez votre installation avec :
 ```bash
   node -v
   npm -v
-  Installation et lancement
 ```
+## Installation et lancement
 
 Cloner ce dépôt ou récupérer les sources :
 
 ```bash
   git clone git@github.com:HugoD66/Rover-Project.git
   cd Rover-Project
-```
-## Installation et lancement
-
-```bash
   npm install
 ```
 
@@ -77,8 +73,7 @@ Ouvrez un second terminal pour vous connecter au rover via netcat (ou telnet) :
 ```bash
  nc 127.0.0.1 12345
 ```
-
-(Sur Windows, si nc n’est pas installé, vous pouvez utiliser telnet 127.0.0.1 12345 ou installer un équivalent de netcat.)
+(Sur Windows, si nc n’est pas installé, vous pouvez utiliser telnet 127.0.0.1 12345 ou installer un équivalent de netcat, comme Nmap.)
 
 Tapez une commande (ex. A) et validez avec [Entrée] :
 - `Z` : Avancer
