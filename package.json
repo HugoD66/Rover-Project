@@ -6,9 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "tsc && node dist/main.js",
-    "start-server": "node dist/server.js",
-    "start-client": "node dist/client.js",
-    "start-all": "concurrently \"npm run start-server\" \"npm run start-client\""
+    "stop": "rm -rf dist"
   },
   "author": "",
   "license": "ISC",

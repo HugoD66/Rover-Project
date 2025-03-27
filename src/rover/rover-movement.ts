@@ -1,6 +1,7 @@
-import {IRoverMovement, Orientation} from "./rover.interface";
+import {IRoverMovement, Orientation} from "../core/interfaces/rover.interface";
 import {Map} from "./map";
-import {Coordinates} from "./coordinates";
+import {Coordinates} from "../core/types/coordinates";
+import {MoveResult} from "../core/types/moveResult";
 
 export class RoverMovement implements IRoverMovement {
   private map: Map;
@@ -9,7 +10,7 @@ export class RoverMovement implements IRoverMovement {
     this.map = map;
   }
 
-  public calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): Coordinates {
+  public calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): MoveResult  {
     let newX = position.x;
     let newY = position.y;
 
@@ -29,10 +30,19 @@ export class RoverMovement implements IRoverMovement {
     }
 
     const obstacles = this.map.getObstacles();
-    if (obstacles && obstacles.some(obstacle => obstacle.getObstaclePosition().x === newX && obstacle.getObstaclePosition().y === newY)) {
-      console.log(`⛔ Obstacle détecté en (${newX}, ${newY}), arrêt du rover. ⛔`);
-      return position;
+    if (obstacles && obstacles.some(ob => ob.getObstaclePosition().x === newX && ob.getObstaclePosition().y === newY)) {
+      return {
+        success: false,
+        position: position, // reste sur place
+        message: `⛔ Obstacle détecté en (${newX}, ${newY}), arrêt du rover. ⛔`
+      };
     }
-    return this.map.validateRoverPositionOnMap(newX, newY);
+
+    const validatedPosition = this.map.validateRoverPositionOnMap(newX, newY);
+
+    return {
+      success: true,
+      position: validatedPosition
+    };
   }
 }

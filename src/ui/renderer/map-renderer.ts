@@ -1,6 +1,6 @@
 // map-renderer.ts
-import { IRoverState } from "../rover/rover.interface";
-import { Obstacle } from "../rover/obstacle";
+import { IRoverState } from "../../core/interfaces/rover.interface";
+import { Obstacle } from "../../core/types/obstacle";
 
 export function renderMapAscii(
   roverState: IRoverState,

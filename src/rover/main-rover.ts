@@ -1,5 +1,5 @@
 import {Map} from "./map";
-import {Obstacle} from "./obstacle";
+import {Obstacle} from "../core/types/obstacle";
 import {Rover} from "./rover";
 
 export function instantiateRover(): Rover {

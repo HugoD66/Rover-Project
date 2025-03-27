@@ -1,5 +1,6 @@
-import {Coordinates} from "./coordinates";
-import {Map} from "./map";
+import {Coordinates} from "../types/coordinates";
+import {Map} from "../../rover/map";
+import {MoveResult} from "../types/moveResult";
 
 export interface IRoverDeplacement {
   goAhead(): IRoverState;
@@ -9,19 +10,20 @@ export interface IRoverDeplacement {
 }
 
 export interface IRoverMovement {
-  calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): Coordinates;
+  calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): MoveResult;
 }
 
 export interface IRoverState {
   getActualPositions(): Coordinates;
   getOrientation(): Orientation;
+  getLastMessage?(): string | null;
+  clearLastMessage?(): void;
 }
 
 export interface RoverCommandInterface {
   executeCommandLine(): IRoverState;
   setCommandLine(commandLine: string[]): IRoverState;
 }
-
 export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
   protected positions: Coordinates;
   protected orientation: string;
@@ -50,6 +52,9 @@ export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCom
 
   public abstract executeCommandLine(): IRoverState;
   public abstract setCommandLine(commandLine: string[]): IRoverState;
+
+  public abstract getLastMessage(): string | null;
+  public abstract clearLastMessage(): void;
 }
 
 export abstract class Orientation {

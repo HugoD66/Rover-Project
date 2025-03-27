@@ -1,8 +1,8 @@
 import {Rover} from "../src/rover/rover";
 import {Map} from "../src/rover/map";
 import {MissionControl} from "../src/mission-control/mission-control";
-import {Coordinates} from "../src/rover/coordinates";
-import {InterpreterDirection, Orientation} from "../src/rover/rover.interface";
+import {Coordinates} from "../src/core/types/coordinates";
+import {InterpreterDirection, Orientation} from "../src/core/interfaces/rover.interface";
 
 describe("Test du Mission Control", () => {
   let rover: Rover;
