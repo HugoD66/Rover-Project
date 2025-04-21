@@ -89,7 +89,6 @@ Dans le premier terminal (celui où tourne node dist/main.js), vous verrez l’�
 Suite à la commande : A
 🛸 Orientation du Rover :  W
 🪐 Positions du Rover : { x: 1, y: 0 }
-Remarque : Vous pouvez enlever l’arrêt automatique du serveur dans le code (this.stop()) si vous souhaitez rester en écoute et accepter plusieurs connexions successives.
 ```
 
 ### Auteurs
