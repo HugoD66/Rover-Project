@@ -1,5 +1,4 @@
-import {Coordinates} from "../types/coordinates";
-
+import { Coordinates } from "../coordinate/coordinates";
 
 export interface IObstacle {
   getObstaclePosition(): Coordinates;

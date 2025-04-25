@@ -1,11 +1,11 @@
-import {Obstacle} from "../core/types/obstacle";
-import {Coordinates} from "../core/types/coordinates";
-import {IMap} from "../core/interfaces/map.interface";
+import { IMap } from "./map.interface";
+import { Obstacle } from "../obstacle/obstacle";
+import { Coordinates } from "../coordinate/coordinates";
 
 export class Map implements IMap {
   protected readonly mapLimitX: number;
   protected readonly mapLimitY: number;
-  protected  obstacles?: Obstacle[] | null | undefined;
+  protected obstacles?: Obstacle[] | null | undefined;
 
   constructor(
     mapLimitX: number,
@@ -14,7 +14,7 @@ export class Map implements IMap {
   ) {
     this.mapLimitX = mapLimitX;
     this.mapLimitY = mapLimitY;
-    this.obstacles = obstacles
+    this.obstacles = obstacles;
   }
 
   public validateRoverPositionOnMap(x: number, y: number): Coordinates {
@@ -23,7 +23,7 @@ export class Map implements IMap {
     return new Coordinates(validX, validY);
   }
 
-  public getMapInformation(): Map {
+  public getMapInformation(): IMap {
     return this;
   }
 

@@ -1,10 +1,9 @@
-import {Coordinates} from "../types/coordinates";
-import {Obstacle} from "../types/obstacle";
-import {Map} from "../../rover/map";
+import { Coordinates } from "../coordinate/coordinates";
+import { Obstacle } from "../obstacle/obstacle";
 
 export interface IMap {
   validateRoverPositionOnMap(x: number, y: number): Coordinates;
-  getMapInformation(): Map;
+  getMapInformation(): IMap;
   getMapLimitX(): number;
   getMapLimitY(): number;
   getObstacles(): Obstacle[] | null | undefined;

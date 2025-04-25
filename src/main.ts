@@ -1,27 +1,21 @@
-import { Interpreter } from "./interpreter/interpreter-export";
-import {Rover} from "./rover/rover-export";
-import {MissionControl} from "./mission-control/mission-control-export";
-
+import { Interpreter } from "./interpreter/interpreter";
+import { Rover } from "./rover/rover";
+import { MissionControl } from "./mission-control/mission-control";
 import { instantiateMissionControl } from "./mission-control/main.mission-control";
-import { instantiateRover } from "./rover/main-rover";
-import {CliUI} from "./ui/terminal/cli-ui";
+import { instantiateRover } from "./rover/rover-factory";
+import { CliUI } from "./interpreter/cli-ui";
 
 const HOST = '0.0.0.0';
 const PORT = 12345;
 
 function runMission(): void {
-    const rover: Rover = instantiateRover();
+  const rover: Rover = instantiateRover();
+  const missionControl: MissionControl = instantiateMissionControl(rover);
+  const interpreter: Interpreter = new Interpreter(missionControl);
+  const cli = new CliUI(interpreter);
 
-    const missionControl: MissionControl = instantiateMissionControl(rover);
-
-    const interpreter: Interpreter = new Interpreter(missionControl);
-
-    const cli = new CliUI(interpreter);
-    cli.start();
-
-    interpreter.startServer(HOST, PORT);
-
-
+  cli.start();
+  interpreter.startServer(HOST, PORT);
 }
 
 runMission();

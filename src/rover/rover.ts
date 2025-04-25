@@ -1,126 +1,123 @@
-import {ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation} from '../core/interfaces/rover.interface';
-import {Coordinates} from "../core/types/coordinates";
-import {Map} from "./map";
-import {Obstacle} from "../core/types/obstacle";
-import {RoverMovement} from "./rover-movement";
-import * as console from "node:console";
+import { ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation } from './rover.interface';
+import { Coordinates } from "./coordinate/coordinates";
+import { Map } from "./map/map"; // Importe la classe Map
+import { RoverMovement } from "./rover-movement";
 
-export class Rover extends ARover{
-    private movement: IRoverMovement;
-    private lastMessage: string | null = null;
+export class Rover extends ARover {
+  private movement: IRoverMovement;
+  private lastMessage: string | null = null;
 
-    constructor(map: Map) {
-        super(
-          new Coordinates(0, 0),
-          Orientation.NORTH,
-          map
-        )
-        this.movement = new RoverMovement(this.map);
-        this.lastMessage = null;
+  constructor(map: Map) { // Attends une instance de Map
+    super(
+      new Coordinates(0, 0),
+      Orientation.NORTH,
+      map // Passe map au constructeur de ARover
+    );
+    this.movement = new RoverMovement(map); // Passe une instance de Map
+  }
+
+  public getState(): IRoverState {
+    return {
+      getActualPositions: () => this.positions,
+      getOrientation: () => this.orientation,
+      toString: () => `Position: ${this.positions.toString()}, Orientation: ${this.orientation}` // Ajout de la méthode toString
+    };
+  }
+
+  public getActualPositions(): Coordinates {
+    return this.positions;
+  }
+
+  public getOrientation(): string {
+    return this.orientation;
+  }
+
+  public move(moveForward: boolean): IRoverState {
+    const result = this.movement.calculateNextPosition(this.positions, this.orientation, moveForward);
+
+    if (!result.success && result.message) {
+      this.lastMessage = result.message;
+      return this.getState();
     }
 
-    public getState(): IRoverState {
-        return {
-            getActualPositions: () => this.positions,
-            getOrientation: () => this.orientation
-        };
+    this.positions = result.position;
+    return this.getState();
+  }
+
+  public goAhead(): IRoverState {
+    return this.move(true);
+  }
+
+  public goBack(): IRoverState {
+    return this.move(false);
+  }
+
+  public turnOnLeft(): IRoverState {
+    const directions = [Orientation.NORTH, Orientation.WEST, Orientation.SOUTH, Orientation.EST];
+    const currentIndex = directions.indexOf(this.orientation);
+    const nextIndex = (currentIndex + 1) % directions.length;
+    this.orientation = directions[nextIndex];
+    return this.getState();
+  }
+
+  public turnOnRight(): IRoverState {
+    const directions = [Orientation.NORTH, Orientation.EST, Orientation.SOUTH, Orientation.WEST];
+    const currentIndex = directions.indexOf(this.orientation);
+    const nextIndex = (currentIndex + 1) % directions.length;
+    this.orientation = directions[nextIndex];
+    return this.getState();
+  }
+
+  public setCommandLine(commandLine: string[]): IRoverState {
+    this.commandLine = commandLine;
+    return this.getState();
+  }
+
+  public executeCommandLine(): IRoverState {
+    const commandLine = this.commandLine;
+
+    if (!commandLine) return this.getState();
+
+    for (let i = 0; i < commandLine.length; i++) {
+      const command = commandLine[i];
+      switch (command) {
+        case InterpreterDirection.AHEAD:
+          this.goAhead();
+          break;
+        case InterpreterDirection.RIGHT:
+          this.turnOnRight();
+          this.goAhead();
+          break;
+        case InterpreterDirection.LEFT:
+          this.turnOnLeft();
+          this.goAhead();
+          break;
+        case InterpreterDirection.BACK:
+          this.turnOnLeft();
+          this.turnOnLeft();
+          this.goAhead();
+          break;
+        default:
+          console.log('Invalid command');
+      }
     }
 
-    public getActualPositions(): Coordinates {
-        return this.positions;
-    }
+    return this.getState();
+  }
 
-    public getOrientation(): Orientation {
-        return this.orientation;
-    }
+  public getMap(): Map { // Retourne une instance de Map
+    return this.map as Map; // Utilise un cast pour indiquer que this.map est de type Map
+  }
 
-    public move(moveForward: boolean): IRoverState {
-        const result = this.movement.calculateNextPosition(this.positions, this.orientation, moveForward);
+  public getLastMessage(): string | null {
+    return this.lastMessage;
+  }
 
-        if (!result.success && result.message) {
-            this.lastMessage = result.message;
-            return this.getState();
-        }
+  public clearLastMessage(): void {
+    this.lastMessage = null;
+  }
 
-        this.positions = result.position;
-        return this.getState();
-    }
-
-    public goAhead(): IRoverState {
-        return this.move(true);
-    }
-
-    public goBack(): IRoverState {
-        return this.move(false);
-    }
-
-    public turnOnLeft(): IRoverState {
-        const directions = [Orientation.NORTH, Orientation.WEST, Orientation.SOUTH, Orientation.EST];
-        const currentIndex = directions.indexOf(this.orientation);
-        const nextIndex = (currentIndex + 1) % directions.length;
-        this.orientation = directions[nextIndex];
-        return this.getState();
-    }
-
-
-    public turnOnRight(): IRoverState {
-        const directions = [Orientation.NORTH, Orientation.EST, Orientation.SOUTH, Orientation.WEST];
-        const currentIndex = directions.indexOf(this.orientation);
-        const nextIndex = (currentIndex + 1) % directions.length;
-        this.orientation = directions[nextIndex];
-        return this.getState();
-    }
-
-    public setCommandLine(commandLine: string[]): IRoverState {
-        this.commandLine = commandLine;
-        return this.getState();
-    }
-
-    public executeCommandLine(): IRoverState {
-        const commandLine = this.commandLine;
-
-        if (!commandLine) return this.getState();
-
-        for (let i = 0; i < commandLine.length; i++) {
-            const command = commandLine[i];
-            switch (command) {
-                case InterpreterDirection.AHEAD:
-                    this.goAhead();
-                    break;
-                case InterpreterDirection.RIGHT:
-                    this.turnOnRight();
-                    this.goAhead();
-                    break;
-                case InterpreterDirection.LEFT:
-                    this.turnOnLeft();
-                    this.goAhead();
-
-                    break;
-                case InterpreterDirection.BACK:
-                    this.turnOnLeft();
-                    this.turnOnLeft();
-                    this.goAhead();
-
-                    break;
-                default:
-                    console.log('Invalid command');
-            }
-        }
-
-        return this.getState();
-    }
-
-
-
-    public getMap(): Map {
-        return this.map;
-    }
-
-    public getLastMessage(): string | null {
-        return this.lastMessage;
-    }
-
-    public clearLastMessage(): void {
-        this.lastMessage = null;
-    }
+  public toString(): string { // Ajout de la méthode toString
+    return `Rover: Position=${this.positions.toString()}, Orientation=${this.orientation}`;
+  }
 }

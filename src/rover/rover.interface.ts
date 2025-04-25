@@ -1,6 +1,6 @@
-import {Coordinates} from "../types/coordinates";
-import {Map} from "../../rover/map";
-import {MoveResult} from "../types/moveResult";
+import { Coordinates } from "./coordinate/coordinates";
+import { MoveResult } from "../interpreter/moveResult";
+import { IMap } from "./map/map.interface"; // Importation correcte de IMap
 
 export interface IRoverDeplacement {
   goAhead(): IRoverState;
@@ -15,46 +15,46 @@ export interface IRoverMovement {
 
 export interface IRoverState {
   getActualPositions(): Coordinates;
-  getOrientation(): Orientation;
+  getOrientation(): string;
   getLastMessage?(): string | null;
   clearLastMessage?(): void;
+  toString(): string; // Ajout de la méthode toString
 }
 
 export interface RoverCommandInterface {
   executeCommandLine(): IRoverState;
   setCommandLine(commandLine: string[]): IRoverState;
 }
+
 export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
   protected positions: Coordinates;
   protected orientation: string;
   protected commandLine: string[] | null;
-  protected map: Map;
+  protected map: IMap; // Déclarer map comme propriété protégée
 
   protected constructor(
     positions: Coordinates,
     orientation: string,
-    map: Map,
+    map: IMap, // Ajouter map comme paramètre
     commandLine: string[] | null = null
   ) {
     this.positions = positions;
     this.orientation = orientation;
     this.commandLine = commandLine;
-    this.map = map;
+    this.map = map; // Initialiser map
   }
 
   public abstract goAhead(): IRoverState;
   public abstract goBack(): IRoverState;
   public abstract turnOnRight(): IRoverState;
   public abstract turnOnLeft(): IRoverState;
-
   public abstract getActualPositions(): Coordinates;
-  public abstract getOrientation(): Orientation;
-
+  public abstract getOrientation(): string;
   public abstract executeCommandLine(): IRoverState;
   public abstract setCommandLine(commandLine: string[]): IRoverState;
-
   public abstract getLastMessage(): string | null;
   public abstract clearLastMessage(): void;
+  public abstract toString(): string; // Ajout de la méthode toString
 }
 
 export abstract class Orientation {
@@ -70,4 +70,3 @@ export abstract class InterpreterDirection {
   static readonly LEFT = 'LEFT';
   static readonly BACK = 'BACK';
 }
-

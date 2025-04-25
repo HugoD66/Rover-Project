@@ -1,7 +1,7 @@
-import {InterpreterDirection, IRoverState} from "../core/interfaces/rover.interface";
-import { IMissionControl } from "../core/interfaces/mission-control.interface";
-import {Obstacle, Rover} from "../rover/rover-export";
-import {Map} from "../rover/rover-export";
+import { InterpreterDirection, IRoverState } from "../rover/rover.interface";
+import { IMissionControl } from "./mission-control.interface";
+import { Rover } from "../rover/rover";
+import { Map } from "../rover/map/map";
 
 export class MissionControl implements IMissionControl {
   private rover: Rover;
@@ -31,7 +31,7 @@ export class MissionControl implements IMissionControl {
   }
 
   public getRoverState(): IRoverState {
-    return this.rover?.getState();
+    return this.rover.getState();
   }
 
   public executeCommands(): void {

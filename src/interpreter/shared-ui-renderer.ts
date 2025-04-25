@@ -1,5 +1,5 @@
-import { renderMapAscii } from "./map-renderer";
-import { MissionControl } from "../../mission-control/mission-control-export";
+import { renderMapAscii } from "../rover/map/map-renderer";
+import { MissionControl } from "../mission-control/mission-control";
 
 export function renderFullState(missionControl: MissionControl): string {
   const roverState = missionControl.getRoverState();
@@ -13,8 +13,8 @@ export function renderFullState(missionControl: MissionControl): string {
   const ascii = renderMapAscii(roverState, obstacles ?? [], { width, height });
 
   return [
-    '🛸 Orientation du Rover : ' + roverState.getOrientation(),
-    '🪐 Position du Rover : ' + roverState.getActualPositions().toString(),
+    `🛸 Orientation du Rover : ${roverState.getOrientation()}`,
+    `🪐 Position du Rover : ${roverState.getActualPositions().toString()}`,
     '',
     ascii
   ].join('\n');

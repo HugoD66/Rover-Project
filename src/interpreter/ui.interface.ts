@@ -1,5 +1,4 @@
-import {Interpreter} from "../../interpreter/interpreter";
-import {renderFullState} from "../../ui/renderer/shared-ui-renderer";
+import { Interpreter } from "./interpreter";
 
 export interface IUI {
   start(): void;
@@ -20,8 +19,8 @@ export abstract class AbstractUI implements IUI {
   }
 
   public renderState(): void {
-    const output = renderFullState(this.interpreter.getMissionControl());
-    this.display(output);
+    const output = this.interpreter.getMissionControl();
+    this.display(output.toString());
   }
 
   public renderError(error: string): void {

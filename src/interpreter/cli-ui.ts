@@ -1,4 +1,4 @@
-import {AbstractUI} from "../../core/interfaces/ui.interface";
+import { AbstractUI } from "./ui.interface";
 import * as process from "node:process";
 
 export class CliUI extends AbstractUI {

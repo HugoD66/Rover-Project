@@ -1,6 +1,6 @@
-import { AbstractUI } from "../../core/interfaces/ui.interface";
-import { Interpreter } from "../../interpreter/interpreter-export";
-import { renderFullState } from "../renderer/shared-ui-renderer";
+import { AbstractUI } from "./ui.interface";
+import { Interpreter } from "./interpreter";
+import { renderFullState } from "./shared-ui-renderer";
 import * as net from "net";
 
 export class RouterUI extends AbstractUI {

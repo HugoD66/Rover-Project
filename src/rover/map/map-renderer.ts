@@ -1,12 +1,11 @@
-// map-renderer.ts
-import { IRoverState } from "../../core/interfaces/rover.interface";
-import { Obstacle } from "../../core/types/obstacle";
+import { IRoverState } from "../rover.interface";
+import { Obstacle } from "../obstacle/obstacle";
 
 export function renderMapAscii(
   roverState: IRoverState,
   obstacles: Obstacle[],
   size: { width: number; height: number }
-) {
+): string {
   let output = "";
   for (let y = 0; y < size.height; y++) {
     let row = "";

@@ -1,16 +1,16 @@
-import {IRoverMovement, Orientation} from "../core/interfaces/rover.interface";
-import {Map} from "./map";
-import {Coordinates} from "../core/types/coordinates";
-import {MoveResult} from "../core/types/moveResult";
+import { IRoverMovement, Orientation } from "./rover.interface";
+import { Map } from "./map/map"; // Importe la classe Map
+import { Coordinates } from "./coordinate/coordinates";
+import { MoveResult } from "../interpreter/moveResult";
 
 export class RoverMovement implements IRoverMovement {
-  private map: Map;
+  private map: Map; // Utilise la classe Map
 
-  public constructor(map: Map) {
+  public constructor(map: Map) { // Attends une instance de Map
     this.map = map;
   }
 
-  public calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): MoveResult  {
+  public calculateNextPosition(position: Coordinates, orientation: string, moveForward: boolean): MoveResult {
     let newX = position.x;
     let newY = position.y;
 

@@ -1,4 +1,4 @@
-import {IRoverState} from "./rover.interface";
+import {IRoverState} from "../rover/rover.interface";
 
 export interface IMissionControl {
   executeCommand(char: string): void;

@@ -1,7 +1,7 @@
-import { MissionControl } from "../mission-control/mission-control-export";
-import {RouterServer} from "../network/router-server";
-import {InterpreterDirection} from "../core/interfaces/rover.interface";
-import {IUI} from "../core/interfaces/ui.interface";
+import { MissionControl } from "../mission-control/mission-control";
+import { RouterServer } from "../network/router-server";
+import { InterpreterDirection } from "../rover/rover.interface";
+import { IUI } from "./ui.interface";
 
 export class Interpreter {
   private missionControl: MissionControl;
@@ -14,7 +14,6 @@ export class Interpreter {
   public startServer(host: string, port: number): void {
     this.routerServer = new RouterServer(host, port, this);
     this.routerServer.start();
-
   }
 
   public executeCommand(command?: string, ui?: IUI): void {
@@ -36,7 +35,6 @@ export class Interpreter {
     this.reportRoverMessage(ui);
   }
 
-
   public getMissionControl(): MissionControl {
     return this.missionControl;
   }
@@ -50,5 +48,4 @@ export class Interpreter {
 
     rover.clearLastMessage?.();
   }
-
 }

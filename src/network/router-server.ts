@@ -1,7 +1,7 @@
 import * as net from 'net';
 import { Interpreter } from "../interpreter/interpreter";
-import { RouterUI } from "../ui/terminal/router-ui";
-import {renderFullState} from "../ui/renderer/shared-ui-renderer";
+import { RouterUI } from "../interpreter/router-ui";
+import { renderFullState } from "../interpreter/shared-ui-renderer"; // Importation correcte de renderFullState
 
 export class RouterServer {
   private readonly host: string;
@@ -36,7 +36,6 @@ export class RouterServer {
     socket.on('error', (err) => this.handleError(socket, err, ui));
   }
 
-
   private handleData(data: Buffer, ui: RouterUI): void {
     const message = data.toString().trim().toUpperCase();
 
@@ -48,14 +47,10 @@ export class RouterServer {
       this.executeCommand(message, ui);
     }
 
-    //ui.renderState();
-    //ui.display("Commande(s) exécutée(s). Entrez la prochaine commande :");
-
-    const fullState = renderFullState(this.interpreter.getMissionControl());
+    const fullState = renderFullState(this.interpreter.getMissionControl()); // Obtient l'état complet
     ui.log(`\n📡 Commande reçue du client : ${message}`);
-    ui.log(fullState);
+    ui.log(JSON.stringify(fullState, null, 2)); // Convertit l'objet en chaîne JSON lisible
   }
-
 
   private executeCommand(message: string, ui: RouterUI): void {
     this.interpreter.executeCommand(message, ui);
@@ -69,7 +64,6 @@ export class RouterServer {
   private handleError(socket: net.Socket, err: Error, ui: RouterUI): void {
     ui.display(`Erreur sur la connexion ${socket.remoteAddress}:${socket.remotePort} : ${err.message}`);
   }
-
 
   public stop(): void {
     if (this.server) {
