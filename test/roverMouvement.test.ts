@@ -1,7 +1,7 @@
 import { Rover } from "../src/rover/rover";
-import {IRoverState, Orientation} from "../src/core/interfaces/rover.interface";
-import { Map } from "../src/rover/map";
-import {Coordinates} from "../src/core/types/coordinates";
+import {IRoverState, Orientation} from "../src/rover/rover.interface";
+import { Map } from "../src/rover/map/map";
+import {Coordinates} from "../src/rover/coordinate/coordinates";
 
 describe("Tests de déplacement du Rover", () => {
   let rover: Rover;
@@ -15,6 +15,33 @@ describe("Tests de déplacement du Rover", () => {
     expect(etat.getOrientation()).toBe(Orientation.NORTH);
   });
 
+  test("Le rover tourne puis fait un mouvement inverse (BACK)", () => {
+    map = new Map(5, 5);
+    rover = new Rover(map);
+  
+    rover.turnOnRight(); // Tourne à droite (de Nord à Est)
+    rover.goAhead();     // Avance de 1 à (1, 0)
+    rover.turnOnRight(); // Tourne à droite (de Est à Sud)
+    rover.goBack();      // Avance de 1 vers le Sud, donc retourne à (1, 1)
+  
+    const etat: IRoverState = rover.getState();
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(1, 1));
+    expect(etat.getOrientation()).toBe(Orientation.SOUTH);
+  });
+  test("Le rover effectue une rotation complète et revient à sa position initiale", () => {
+    map = new Map(5, 5);
+    rover = new Rover(map);
+  
+    rover.turnOnLeft();  // Tourne à gauche (de Nord à Ouest)
+    rover.turnOnLeft();  // Tourne à gauche (de Ouest à Sud)
+    rover.turnOnLeft();  // Tourne à gauche (de Sud à Est)
+    rover.turnOnLeft();  // Tourne à gauche (de Est à Nord)
+  
+    const etat: IRoverState = rover.getState();
+    expect(etat.getActualPositions()).toStrictEqual(new Coordinates(0, 0));
+    expect(etat.getOrientation()).toBe(Orientation.NORTH);
+  });
+  
   test("Le rover avance de 1 vers le Nord", () => {
     map = new Map(5, 5);
     rover = new Rover(map);
