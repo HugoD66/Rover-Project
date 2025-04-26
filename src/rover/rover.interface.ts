@@ -3,10 +3,10 @@ import { MoveResult } from "../interpreter/moveResult";
 import { IMap } from "./map/map.interface"; // Importation correcte de IMap
 
 export interface IRoverDeplacement {
-  goAhead(): IRoverState;
-  goBack(): IRoverState;
-  turnOnLeft(): IRoverState;
-  turnOnRight(): IRoverState;
+  goAhead(): MoveResult;
+  goBack(): MoveResult;
+  turnOnLeft(): MoveResult;
+  turnOnRight(): MoveResult;
 }
 
 export interface IRoverMovement {
@@ -22,8 +22,8 @@ export interface IRoverState {
 }
 
 export interface RoverCommandInterface {
-  executeCommandLine(): IRoverState;
-  setCommandLine(commandLine: string[]): IRoverState;
+  executeCommandLine(): MoveResult[];
+  setCommandLine(commandLine: string[]): MoveResult[];
 }
 
 export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCommandInterface {
@@ -44,14 +44,14 @@ export abstract class ARover implements IRoverDeplacement, IRoverState, RoverCom
     this.map = map; // Initialiser map
   }
 
-  public abstract goAhead(): IRoverState;
-  public abstract goBack(): IRoverState;
-  public abstract turnOnRight(): IRoverState;
-  public abstract turnOnLeft(): IRoverState;
+  public abstract goAhead(): MoveResult;
+  public abstract goBack(): MoveResult;
+  public abstract turnOnRight(): MoveResult;
+  public abstract turnOnLeft(): MoveResult;
   public abstract getActualPositions(): Coordinates;
   public abstract getOrientation(): string;
-  public abstract executeCommandLine(): IRoverState;
-  public abstract setCommandLine(commandLine: string[]): IRoverState;
+  public abstract executeCommandLine(): MoveResult[];
+  public abstract setCommandLine(commandLine: string[]): MoveResult[];
   public abstract getLastMessage(): string | null;
   public abstract clearLastMessage(): void;
   public abstract toString(): string; // Ajout de la méthode toString

@@ -4,7 +4,8 @@ import { Obstacle } from "../obstacle/obstacle";
 export function renderMapAscii(
   roverState: IRoverState,
   obstacles: Obstacle[],
-  size: { width: number; height: number }
+  size: { width: number; height: number },
+  showObstacles: boolean = true // ✅ Ajout de ce paramètre optionnel
 ): string {
   let output = "";
   for (let y = 0; y < size.height; y++) {
@@ -14,12 +15,14 @@ export function renderMapAscii(
         x === roverState.getActualPositions().x &&
         y === roverState.getActualPositions().y
       ) {
-        row += "R";  // rover
-      } else if (obstacles.some(o => {
-        const pos = o.getObstaclePosition();
-        return pos.x === x && pos.y === y;
-      })) {
-        row += "X";  // obstacle
+        row += "R"; // rover
+      } else if (
+        showObstacles && obstacles.some(o => {
+          const pos = o.getObstaclePosition();
+          return pos.x === x && pos.y === y;
+        })
+      ) {
+        row += "X"; // obstacle visible seulement si showObstacles = true
       } else {
         row += ".";
       }

@@ -2,10 +2,12 @@ import { MissionControl } from "../mission-control/mission-control";
 import { RouterServer } from "../network/router-server";
 import { InterpreterDirection } from "../rover/rover.interface";
 import { IUI } from "./ui.interface";
+import { renderFullState } from "./shared-ui-renderer"; // ✅ Ajouté
 
 export class Interpreter {
   private missionControl: MissionControl;
   private routerServer: RouterServer | null = null;
+  private lastMoveFailed = false; // ✅ ajouté
 
   public constructor(missionControl: MissionControl) {
     this.missionControl = missionControl;
@@ -31,12 +33,22 @@ export class Interpreter {
         return;
     }
 
-    this.missionControl.executeCommand(direction);
-    this.reportRoverMessage(ui);
+    const moveResult = this.missionControl.executeCommand(direction); // ✅ récupérer le résultat du mouvement
+
+    if (moveResult) {  // Ajouter une vérification pour moveResult
+      this.lastMoveFailed = !moveResult.success; // ✅ Si success = false, alors il y a collision
+      this.reportRoverMessage(ui);
+    } else {
+      console.error("Le mouvement a échoué, le résultat est undefined.");
+    }
   }
 
   public getMissionControl(): MissionControl {
     return this.missionControl;
+  }
+
+  public renderState(ui: IUI): void {
+    ui.display(renderFullState(this.missionControl, this.lastMoveFailed)); // ✅ Afficher obstacles seulement si collision
   }
 
   private reportRoverMessage(ui?: IUI): void {

@@ -2,6 +2,7 @@ import { ARover, InterpreterDirection, IRoverMovement, IRoverState, Orientation 
 import { Coordinates } from "./coordinate/coordinates";
 import { Map } from "./map/map"; // Importe la classe Map
 import { RoverMovement } from "./rover-movement";
+import { MoveResult } from "../interpreter/moveResult";  // Importation de MoveResult
 
 export class Rover extends ARover {
   private movement: IRoverMovement;
@@ -32,77 +33,75 @@ export class Rover extends ARover {
     return this.orientation;
   }
 
-  public move(moveForward: boolean): IRoverState {
+  public move(moveForward: boolean): MoveResult {
     const result = this.movement.calculateNextPosition(this.positions, this.orientation, moveForward);
 
     if (!result.success && result.message) {
       this.lastMessage = result.message;
-      return this.getState();
+      return { success: false, position: this.positions, message: this.lastMessage };
     }
 
     this.positions = result.position;
-    return this.getState();
+    return { success: true, position: this.positions, message: '' };
   }
 
-  public goAhead(): IRoverState {
+  public goAhead(): MoveResult {
     return this.move(true);
   }
 
-  public goBack(): IRoverState {
+  public goBack(): MoveResult {
     return this.move(false);
   }
 
-  public turnOnLeft(): IRoverState {
+  public turnOnLeft(): MoveResult {
     const directions = [Orientation.NORTH, Orientation.WEST, Orientation.SOUTH, Orientation.EST];
     const currentIndex = directions.indexOf(this.orientation);
     const nextIndex = (currentIndex + 1) % directions.length;
     this.orientation = directions[nextIndex];
-    return this.getState();
+    return { success: true, position: this.positions, message: '' };
   }
 
-  public turnOnRight(): IRoverState {
+  public turnOnRight(): MoveResult {
     const directions = [Orientation.NORTH, Orientation.EST, Orientation.SOUTH, Orientation.WEST];
     const currentIndex = directions.indexOf(this.orientation);
     const nextIndex = (currentIndex + 1) % directions.length;
     this.orientation = directions[nextIndex];
-    return this.getState();
+    return { success: true, position: this.positions, message: '' };
   }
 
-  public setCommandLine(commandLine: string[]): IRoverState {
+  public setCommandLine(commandLine: string[]): MoveResult[] {
     this.commandLine = commandLine;
-    return this.getState();
+    return [{ success: true, position: this.positions, message: '' }];
   }
 
-  public executeCommandLine(): IRoverState {
-    const commandLine = this.commandLine;
-
-    if (!commandLine) return this.getState();
-
-    for (let i = 0; i < commandLine.length; i++) {
-      const command = commandLine[i];
-      switch (command) {
-        case InterpreterDirection.AHEAD:
-          this.goAhead();
-          break;
-        case InterpreterDirection.RIGHT:
-          this.turnOnRight();
-          this.goAhead();
-          break;
-        case InterpreterDirection.LEFT:
-          this.turnOnLeft();
-          this.goAhead();
-          break;
-        case InterpreterDirection.BACK:
-          this.turnOnLeft();
-          this.turnOnLeft();
-          this.goAhead();
-          break;
-        default:
-          console.log('Invalid command');
+  public executeCommandLine(): MoveResult[] {
+    const results: MoveResult[] = [];
+    if (this.commandLine) {
+      for (let i = 0; i < this.commandLine.length; i++) {
+        const command = this.commandLine[i];
+        switch (command) {
+          case InterpreterDirection.AHEAD:
+            results.push(this.goAhead());
+            break;
+          case InterpreterDirection.RIGHT:
+            results.push(this.turnOnRight());
+            results.push(this.goAhead());
+            break;
+          case InterpreterDirection.LEFT:
+            results.push(this.turnOnLeft());
+            results.push(this.goAhead());
+            break;
+          case InterpreterDirection.BACK:
+            results.push(this.turnOnLeft());
+            results.push(this.turnOnLeft());
+            results.push(this.goAhead());
+            break;
+          default:
+            console.log('Invalid command');
+        }
       }
     }
-
-    return this.getState();
+    return results;
   }
 
   public getMap(): Map { // Retourne une instance de Map

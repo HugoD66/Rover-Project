@@ -25,6 +25,6 @@ export class CliUI extends AbstractUI {
     } else {
       this.interpreter.executeCommand(message, this);
     }
-    this.renderState();
+    this.interpreter.renderState(this); // ✅ CHANGEMENT ici : appeler interpreter.renderState
   }
 }
